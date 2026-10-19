@@ -2,7 +2,7 @@
 
 An interactive web app for exploring the lineage and family of the Prophet Muhammad ﷺ, with plans to include the sahaba and tabiʿeen and the relationships between them.
 
-<!-- Opening description is a draft to refine together. -->
+The goal is to help us get to know the Prophet ﷺ and the early generations of Muslims, including the sahaba, tabiʿeen, and caliphs. By bringing their family ties and other relationships together in an interactive graph, Tabaqat aims to make it easier to understand how these figures were connected to the Prophet ﷺ and to one another. Biographies, quotations, and source references will offer a closer look at their lives.
 
 ## Planned features
 
