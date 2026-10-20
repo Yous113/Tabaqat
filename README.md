@@ -2,7 +2,16 @@
 
 An interactive web app for exploring the lineage and family of the Prophet Muhammad ﷺ, with plans to include the sahaba and tabiʿeen and the relationships between them.
 
-The goal is to help us get to know the Prophet ﷺ and the early generations of Muslims, including the sahaba, tabiʿeen, and caliphs. By bringing their family ties and other relationships together in an interactive graph, Tabaqat aims to make it easier to understand how these figures were connected to the Prophet ﷺ and to one another. Biographies, quotations, and source references will offer a closer look at their lives.
+The goal is to help us get to know the Prophet ﷺ and the early generations of Muslims, including the sahaba, tabiʿeen, and caliphs. By showing their lineage in an interactive tree, Tabaqat aims to make their family connections easier to understand. Biographies, quotations, and source references will offer a closer look at their lives.
+
+The tree follows father-to-child connections. Mothers, spouses, and other relationships will be described in profiles rather than drawn as extra connections.
+
+## Current features
+
+- The existing lineage from ʿAdnān to the Prophet Muhammad ﷺ, arranged vertically.
+- Person cards showing names, honorifics, and aliases where provided.
+- A starting view focused on the Prophet ﷺ, with panning and zoom controls.
+- Reset view to return to the starting focus, and Fit all to see the whole tree.
 
 ## Planned features
 
@@ -36,7 +45,7 @@ Quotations will include source references, with edition, volume, page, and trans
 
 ## Project status
 
-The React and TypeScript foundation is set up with Vite, Tailwind CSS, React Flow, and Dagre. The interactive graph and historical content are the next steps.
+The first interactive lineage tree is implemented with React Flow and Dagre. Person profiles and additional historical content are planned next.
 
 ## Local development
 

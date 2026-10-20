@@ -63,3 +63,32 @@ test('represents every father-to-child connection in the correct direction', () 
   ])
   expect(new Set(graph.edges.map((edge) => edge.id)).size).toBe(2)
 })
+
+test('positions children below their father and separates sibling cards', () => {
+  const people: Person[] = [
+    { id: 'person-a', name: 'Person A' },
+    { id: 'person-b', name: 'Person B' },
+    { id: 'person-c', name: 'Person C' },
+  ]
+  const connections: FatherConnection[] = [
+    { from: 'person-a', to: 'person-b', type: 'father' },
+    { from: 'person-a', to: 'person-c', type: 'father' },
+  ]
+
+  const { nodes } = createLineageGraph(people, connections)
+  const [father, firstChild, secondChild] = nodes
+
+  expect(firstChild.position.y).toBeGreaterThan(
+    father.position.y + Number(father.style?.height ?? 0),
+  )
+  expect(secondChild.position.y).toBeGreaterThan(
+    father.position.y + Number(father.style?.height ?? 0),
+  )
+  const left = firstChild.position.x < secondChild.position.x
+    ? firstChild
+    : secondChild
+  const right = left === firstChild ? secondChild : firstChild
+  expect(Number(left.style?.width)).toBeGreaterThan(0)
+  expect(Number(left.style?.height)).toBeGreaterThan(0)
+  expect(left.position.x + Number(left.style?.width)).toBeLessThan(right.position.x)
+})
