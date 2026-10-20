@@ -23,4 +23,6 @@ Every historical fact in `src/data/` (names, aliases, dates, relationships, biog
 
 ## Verification
 
+Place all test files in the top-level `tests/` directory, mirroring the relevant `src/` subdirectories (for example, `tests/graph/` for `src/graph/`).
+
 Before finishing implementation work, run `npm run build`, `npm run lint`, and any existing tests relevant to the change. If a check fails or cannot run, report the result and any remaining limitation. Documentation-only edits need a content and formatting check.

@@ -1,3 +1,5 @@
+import { connections, people } from './data/lineage'
+
 function App() {
   return (
     <main className="flex min-h-svh items-center justify-center px-6 py-12">
@@ -13,7 +15,8 @@ function App() {
           connections between the early generations of Muslims.
         </p>
         <p className="mt-8 border-t border-stone-300 pt-6 text-sm text-stone-600">
-          The interactive graph is coming next.
+          {people.length} people and {connections.length} father-to-child
+          connections. The interactive tree is coming next.
         </p>
       </div>
     </main>

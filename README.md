@@ -40,7 +40,7 @@ The React and TypeScript foundation is set up with Vite, Tailwind CSS, React Flo
 
 ## Local development
 
-Install a Node.js version supported by Vite (20.19+ on Node 20, or 22.12+ on newer releases) and npm. Setup was verified with Node 26.
+Install Node.js 22.12 or newer and npm to run both Vite and Vitest. Setup was verified with Node 26.
 
 ```bash
 npm install
@@ -56,6 +56,7 @@ Open the local URL printed by Vite, usually `http://localhost:5173`. Changes to 
 | `npm run dev` | Start the local development server. |
 | `npm run build` | Check TypeScript and generate the production app in `dist/`. |
 | `npm run lint` | Check the code with Oxlint. |
+| `npm test` | Run the automated tests once with Vitest. |
 | `npm run preview` | Preview the production build locally after building. |
 
 ### Project structure
@@ -65,6 +66,7 @@ src/
   App.tsx       Main app component; the starting point for the interface.
   index.css     Global styles and Tailwind and React Flow stylesheet imports.
   main.tsx      Mounts the React app into the page.
+tests/          Automated tests, mirroring the relevant src/ subdirectories.
 index.html      HTML entry point and page metadata.
 vite.config.ts  Vite plugins for React and Tailwind CSS.
 ```
