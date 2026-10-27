@@ -16,3 +16,9 @@ A relationship in which the source person is the father of the destination perso
 
 **Alias**:
 An alternative name associated with the same person, rather than a separate person.
+
+**Person role**:
+A designation of a person's religious status or historical office, such as prophet or Rashidun caliph. A person may hold more than one role.
+
+**Rashidun caliph**:
+A person who served as caliph during the Rashidun period. In Tabaqat, this includes Abū Bakr, ʿOmar, ʿUthmān, ʿAlī, and Al-Ḥasan.

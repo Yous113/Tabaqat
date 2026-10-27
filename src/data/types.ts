@@ -3,6 +3,7 @@ export interface Person {
   name: string
   aliases?: string[]
   honorific?: string
+  roles?: string[]
 }
 
 export interface FatherConnection {
