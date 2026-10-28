@@ -15,7 +15,9 @@ function addFiles(...paths: string[]) {
 }
 
 function runCheck() {
-  return spawnSync(process.execPath, [script, srcDir], { encoding: 'utf8' })
+  const result = spawnSync(process.execPath, [script, srcDir], { encoding: 'utf8' })
+  if (result.error) throw result.error
+  return result
 }
 
 beforeEach(() => {
