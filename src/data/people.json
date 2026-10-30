@@ -47,7 +47,6 @@
     { "id": "amr-ibn-kab", "name": "ʿAmr" },
     { "id": "amir-ibn-amr", "name": "ʿĀmir" },
     { "id": "uthman-ibn-amir", "name": "ʿUthmān" },
-    { "id": "abdullah-ibn-uthman", "name": "ʿAbd Allāh" },
     { "id": "muhammad-ibn-abdullah-ibn-uthman", "name": "Muḥammad" },
     { "id": "qasim-ibn-muhammad", "name": "Al-Qāsim" },
     { "id": "uthman-ibn-amr", "name": "ʿUthmān" },
@@ -98,8 +97,9 @@
     { "id": "muawiyah-ibn-sakhr", "name": "Muʿāwiyah" },
     { "id": "yazid-ibn-muawiyah", "name": "Yazīd" },
     { "id": "muawiyah-ibn-yazid", "name": "Muʿāwiyah" },
-    { "id": "abu-bakr", "name": "Abū Bakr", "roles": ["rashidun-caliph"] }
+    { "id": "abu-bakr", "name": "Abū Bakr", "aliases": ["ʿAbd Allāh"], "roles": ["rashidun-caliph"] }
   ],
+  "redirects": { "abdullah-ibn-uthman": "abu-bakr" },
   "connections": [
     { "from": "adnan", "to": "maadd-ibn-adnan", "type": "father" },
     { "from": "maadd-ibn-adnan", "to": "nizar-ibn-maadd", "type": "father" },
@@ -147,8 +147,8 @@
     { "from": "kab-ibn-sad", "to": "amr-ibn-kab", "type": "father" },
     { "from": "amr-ibn-kab", "to": "amir-ibn-amr", "type": "father" },
     { "from": "amir-ibn-amr", "to": "uthman-ibn-amir", "type": "father" },
-    { "from": "uthman-ibn-amir", "to": "abdullah-ibn-uthman", "type": "father" },
-    { "from": "abdullah-ibn-uthman", "to": "muhammad-ibn-abdullah-ibn-uthman", "type": "father" },
+    { "from": "uthman-ibn-amir", "to": "abu-bakr", "type": "father" },
+    { "from": "abu-bakr", "to": "muhammad-ibn-abdullah-ibn-uthman", "type": "father" },
     { "from": "muhammad-ibn-abdullah-ibn-uthman", "to": "qasim-ibn-muhammad", "type": "father" },
     { "from": "amr-ibn-kab", "to": "uthman-ibn-amr", "type": "father" },
     { "from": "uthman-ibn-amr", "to": "ubayd-allah-ibn-uthman", "type": "father" },

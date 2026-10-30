@@ -1,6 +1,12 @@
 # Caliph data proposal — Step 1
 
-Approval status: **PENDING — no historical additions or corrections approved.** Research revision **R1 (2026-10-30)**, baseline commit `421705a428979813243a2f643dc33664d83d8c1f`. This document is a proposal only. Preserve all current names, aliases, roles, profiles, IDs and father edges unless an explicitly listed correction is separately approved.
+Approval status: **R1 APPROVED FOR IMPLEMENTATION (provisional, 2026-10-30).** Research revision **R1 (2026-10-30)**, baseline commit `421705a428979813243a2f643dc33664d83d8c1f`. This document is a proposal only. Preserve all current names, aliases, roles, profiles, IDs and father edges unless an explicitly listed correction is separately approved.
+
+## Approval record
+
+The user stated “I will approve for now and we will look at it later” and requested implementation of the plan with three leads. This accepts R1's roster, year-precision chronology and membership, the two qualified rival claimants, al-Mustaʿīn's connecting ancestor, the longer al-Muhtadī ID, and the separate Abū Bakr identity correction preserving both published IDs. No rows were rejected and no additional chronology exceptions were requested. Source caveats remain; approval authorizes implementation and does not independently verify historical truth. The user also explicitly approved all three test seams in the plan.
+
+The proposal text below is retained as the original review ledger: its **PENDING** labels and conditional correction language describe the pre-approval state. This approval record supersedes that status for implementation.
 
 ## Evidence and precision
 

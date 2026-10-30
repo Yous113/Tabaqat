@@ -1,52 +1,26 @@
 import { Handle, Position, type NodeProps } from '@xyflow/react'
 import type { PersonNode } from './createLineageGraph'
-
-const roleAppearances = [
-  {
-    role: 'prophet',
-    cardClassName: 'border-2 border-amber-400 bg-emerald-950 text-white',
-  },
-  {
-    role: 'rashidun-caliph',
-    label: 'Rashidun caliph',
-    cardClassName: 'border border-amber-600 bg-amber-50 text-amber-950',
-    badgeClassName: 'border-amber-300 bg-amber-100 text-amber-900',
-  },
-]
+import { periodAppearance } from './periodAppearance'
 
 export function PersonCard({ data }: NodeProps<PersonNode>) {
-  const { person } = data
-  const appearances = roleAppearances.filter(({ role }) =>
-    person.roles?.includes(role),
-  )
-  const badges = appearances.filter(({ label }) => label !== undefined)
-  const cardClassName = appearances[0]?.cardClassName
-    ?? 'border border-stone-300 bg-white text-stone-900'
+  const { person, tenures = [], onOpen } = data
+  const prophet = person.roles?.includes('prophet')
+  const appearance = tenures[0] && periodAppearance[tenures[0].periodId]
+  const color = prophet ? 'border-amber-400 bg-emerald-950 text-white' : appearance?.card ?? 'border-stone-300 bg-[#fffdf8] text-stone-900'
 
   return (
-    <article className={`flex h-full w-full flex-col items-center justify-center rounded-xl px-3 text-center shadow-sm ${cardClassName}`}>
+    <article className={`relative h-full w-full rounded-2xl border shadow-sm ${color}`}>
       <Handle type="target" position={Position.Top} isConnectable={false} />
-      <p className="text-base leading-6 font-semibold">
-        {person.name}
-        {person.honorific && <span> {person.honorific}</span>}
-      </p>
-      {badges.length > 0 && (
-        <div className="mt-1 flex flex-wrap justify-center gap-1">
-          {badges.map(({ role, label, badgeClassName }) => (
-            <span
-              key={role}
-              className={`rounded-full border px-2 py-0.5 text-xs leading-4 font-medium ${badgeClassName}`}
-            >
-              {label}
-            </span>
-          ))}
-        </div>
-      )}
-      {person.aliases && person.aliases.length > 0 && (
-        <p className={`mt-1 text-sm leading-5 ${appearances.length > 0 ? 'opacity-80' : 'text-stone-600'}`}>
-          {person.aliases.join(' · ')}
-        </p>
-      )}
+      <button type="button" onClick={() => onOpen?.(person.id)} aria-label={`${person.name} — view details`}
+        className="nodrag flex h-full w-full flex-col items-center justify-center gap-2 rounded-2xl px-3 py-3 text-center outline-offset-4 hover:brightness-95 focus-visible:outline-2 focus-visible:outline-emerald-700">
+        <span className="text-base leading-6 font-semibold">{person.name}{person.honorific && <span> {person.honorific}</span>}</span>
+        {tenures.length > 0 && <span className="flex flex-wrap justify-center gap-1">
+          {tenures.map((tenure) => <span key={`${tenure.periodId}:${tenure.status}`} className={`rounded-full border px-2 py-0.5 text-xs leading-4 font-medium ${periodAppearance[tenure.periodId].badge}`}>
+            {periodAppearance[tenure.periodId].label} {tenure.status === 'claimant' ? 'claimant' : 'caliph'}
+          </span>)}
+        </span>}
+        {person.aliases?.length ? <span className={`text-sm leading-5 ${prophet ? 'text-white/80' : 'text-stone-600'}`}>{person.aliases.join(' · ')}</span> : null}
+      </button>
       <Handle type="source" position={Position.Bottom} isConnectable={false} />
     </article>
   )

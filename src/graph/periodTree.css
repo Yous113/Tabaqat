@@ -1,0 +1,19 @@
+.period-tree .react-flow__controls-button {
+  width: 44px;
+  height: 44px;
+}
+
+.period-tree .react-flow__controls {
+  margin-bottom: max(12px, env(safe-area-inset-bottom));
+  overflow: hidden;
+  border: 1px solid #d6d3d1;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px #29252412;
+}
+
+.period-tree .react-flow__handle {
+  width: 6px;
+  height: 6px;
+  background: #78716c;
+  border: none;
+}

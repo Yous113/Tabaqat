@@ -8,18 +8,18 @@ The tree follows father-to-child connections. Mothers, spouses, and other relati
 
 ## Current features
 
-- The existing lineage from ʿAdnān to the Prophet Muhammad ﷺ, arranged vertically.
-- Person cards showing names, honorifics, and aliases where provided.
-- A starting view focused on the Prophet ﷺ, with panning and zoom controls.
-- Reset view to return to the starting focus, and Fit all to see the whole tree.
+- An **Islamic history** landing page with Rashidun, Umayyad, and Abbasid period cards.
+- Separate family lineage trees, including ancestor context and the relevant family branches.
+- Caliph badges identifying office independently of family membership, with sourced reign details.
+- Touch-friendly panning, pinch zoom, Reset view and Fit all controls.
+- Person details presented as a phone bottom sheet or a tablet side panel.
+- Direct period links, browser Back navigation, and a visible way home.
 
 ## Planned features
 
-- A zoomable graph of people and their relationships.
-- Clickable names that open biographies, quotations, and source references.
-- Role badges and a legend to help visitors explore the graph.
+- Biographies and quotations with source references.
 - Search by name and alternative spellings.
-- A layout that works on desktop and mobile.
+- Additional periods after their historical content has been reviewed.
 
 ## Tech stack
 
@@ -31,7 +31,7 @@ The tree follows father-to-child connections. Mothers, spouses, and other relati
 | React Flow (`@xyflow/react`) | Render the graph and support panning, zooming, and person selection. |
 | Dagre (`@dagrejs/dagre`) | Automatically position nodes in the initial lineage and family views. |
 | Tailwind CSS | Style the interface, graph nodes, and role badges. |
-| JSON | Store people, relationships, biographies, quotations, and source references. |
+| JSON and TypeScript data files | Store the canonical lineage and sourced period/office metadata. |
 
 The first version will use static content files. A backend or content management system can be introduced later if the editing workflow requires it.
 
@@ -45,7 +45,7 @@ Quotations will include source references, with edition, volume, page, and trans
 
 ## Project status
 
-The first interactive lineage tree is implemented with React Flow and Dagre. Person profiles and additional historical content are planned next.
+The period lineage explorer uses React Flow and Dagre. Historical additions and source limitations are documented in [the caliph data proposal](docs/research/caliph-data-proposal.md).
 
 ## Local development
 
@@ -57,6 +57,16 @@ npm run dev
 ```
 
 Open the local URL printed by Vite, usually `http://localhost:5173`. Changes to the source files appear automatically while the development server is running. Press `Ctrl+C` in the terminal to stop it.
+
+### Direct links and production hosting
+
+The period chooser lives at `/`. The period trees have stable paths:
+
+- `/periods/rashidun`
+- `/periods/umayyad`
+- `/periods/abbasid`
+
+Vite's development server handles direct requests to these paths. Production hosting must serve the built `index.html` for application routes when no static file matches, while continuing to serve real assets normally. Without this SPA fallback, refreshing or sharing a period URL can return the host's 404 page. A hosting provider has not been selected; configure and verify its fallback before deployment. In-app Back navigation and unknown-route recovery are handled by the application.
 
 ### Available commands
 
