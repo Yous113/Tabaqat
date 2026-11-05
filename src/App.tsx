@@ -1,9 +1,12 @@
 import { MotionConfig } from 'motion/react'
-import { useEffect, useState, type MouseEvent } from 'react'
+import { useEffect, useState, type MouseEvent, type MouseEventHandler } from 'react'
 import { periods } from './data/lineage'
-import { resolveRoute } from './navigation'
+import type { PeriodDefinition } from './data/types'
+import { resolveRoute, type AppRoute } from './navigation'
 import { LandingPage } from './pages/LandingPage'
+import { NotFoundPage } from './pages/NotFoundPage'
 import { PeriodPage } from './pages/PeriodPage'
+import { PageFade } from './ui/PageFade'
 
 function Screen() {
   const [pathname, setPathname] = useState(() => window.location.pathname)
@@ -20,7 +23,6 @@ function Screen() {
 
   useEffect(() => {
     document.title = period ? `${period.title} · Islamic history` : 'Islamic history · Tabaqat'
-    document.getElementById('page-title')?.focus()
   }, [pathname, period])
 
   function navigate(event: MouseEvent<HTMLElement>) {
@@ -35,6 +37,14 @@ function Screen() {
     setPathname(url.pathname)
   }
 
+  return <PageFade pageKey={pathname}><Page route={route} period={period} navigate={navigate} /></PageFade>
+}
+
+function Page({ route, period, navigate }: {
+  route: AppRoute
+  period: PeriodDefinition | undefined
+  navigate: MouseEventHandler<HTMLElement>
+}) {
   if (route.kind === 'home') {
     return <main onClick={navigate}><LandingPage periods={periods} /></main>
   }
@@ -43,14 +53,7 @@ function Screen() {
     return <main className="history-period" onClick={navigate}><PeriodPage period={period} /></main>
   }
 
-  return (
-    <main className="history-not-found" onClick={navigate}>
-      <p className="history-home__eyebrow type-eyebrow">Islamic history</p>
-      <h1 id="page-title" tabIndex={-1}>This period isn’t here yet.</h1>
-      <p>Choose Rashidun, Umayyad, or Abbasid from the period chooser.</p>
-      <a className="history-home-link" href="/" data-app-link><span aria-hidden="true">←</span> Islamic history</a>
-    </main>
-  )
+  return <NotFoundPage onClick={navigate} />
 }
 
 function App() {

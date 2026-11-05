@@ -82,13 +82,26 @@ a, button { touch-action: manipulation; }
 .history-period__heading h1 { margin: 0; }
 .history-period__heading p { margin: 0.125rem 0 0; font-weight: 500; }
 .history-period__canvas { position: absolute; inset: 0; }
-.history-not-found { max-width: 600px; margin: 10vh auto; padding: 28px; }
-.history-not-found h1 { font-family: Georgia, 'Times New Roman', serif; font-size: 42px; font-weight: 400; letter-spacing: -0.04em; line-height: 1.1; }
-.history-not-found p { margin: 18px 0 28px; color: #697368; line-height: 1.7; }
+.history-not-found {
+  --gutter: 1.75rem;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  max-width: 45rem;
+  min-height: 100svh;
+  margin: 0 auto;
+  padding: max(2rem, env(safe-area-inset-top)) max(var(--gutter), env(safe-area-inset-right)) max(2rem, env(safe-area-inset-bottom)) max(var(--gutter), env(safe-area-inset-left));
+}
+.history-not-found h1 { margin: 0; text-wrap: balance; }
+.history-not-found__message { max-width: 30rem; margin: 1.25rem 0 2rem; color: var(--ink-muted); }
+.history-not-found__home { display: inline-flex; align-items: center; gap: 0.5rem; min-height: 2.75rem; padding: 0.5rem 1.125rem; border-radius: 0.875rem; background: var(--ink); color: var(--parchment); font-weight: 600; text-decoration: none; transition: background-color 200ms ease-out; }
 
 @media (hover: hover) {
   .period-card:hover { box-shadow: 0 0.875rem 1.875rem -1.125rem color-mix(in srgb, var(--period-ink) 40%, transparent); }
   .history-home-link:hover { background: color-mix(in srgb, var(--ink) 8%, transparent); }
+  .history-not-found__home:hover { background: color-mix(in srgb, var(--ink) 88%, var(--parchment)); }
 }
 @media (prefers-contrast: more) {
   .period-card { border-color: var(--period-ink); }
@@ -96,7 +109,7 @@ a, button { touch-action: manipulation; }
   .history-home-link { border-color: var(--ink); }
 }
 @media (max-width: 40rem) {
-  .history-home { --gutter: 1rem; }
+  .history-home, .history-not-found { --gutter: 1rem; }
   .history-home__edition { display: none; }
   .history-home__intro { margin: 2rem 0 1.5rem; }
   .history-home__description { margin-top: 1rem; }
