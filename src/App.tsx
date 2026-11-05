@@ -56,7 +56,7 @@ function Screen() {
 
   return (
     <main className="history-not-found" onClick={navigate}>
-      <p className="history-home__eyebrow">Islamic history</p>
+      <p className="history-home__eyebrow type-eyebrow">Islamic history</p>
       <h1 id="page-title" tabIndex={-1}>This period isn’t here yet.</h1>
       <p>Choose Rashidun, Umayyad, or Abbasid from the period chooser.</p>
       <a className="history-home-link" href="/" data-app-link><span aria-hidden="true">←</span> Islamic history</a>

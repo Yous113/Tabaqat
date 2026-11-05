@@ -24,14 +24,14 @@ export function LandingPage({ periods }: { periods: PeriodDefinition[] }) {
 
   return (
     <div className="history-home">
-      <header className="history-home__masthead">
-        <span className="history-home__brand"><svg width="28" height="28" viewBox="0 0 28 28" aria-hidden="true"><path d="M14 2v24M2 14h24M5.5 5.5l17 17M5.5 22.5l17-17" stroke="currentColor" strokeWidth="1.5" /><circle cx="14" cy="14" r="4" fill="currentColor" /></svg> Tabaqat</span>
-        <span className="history-home__edition">A history of connections</span>
+      <header className="history-home__masthead material">
+        <span className="history-home__brand"><svg viewBox="0 0 28 28" aria-hidden="true"><path d="M14 2v24M2 14h24M5.5 5.5l17 17M5.5 22.5l17-17" stroke="currentColor" strokeWidth="1.5" /><circle cx="14" cy="14" r="4" fill="currentColor" /></svg> Tabaqat</span>
+        <span className="history-home__edition type-caption">A history of connections</span>
       </header>
       <section className="history-home__intro" aria-labelledby="page-title">
-        <p className="history-home__eyebrow">People · Families · Periods</p>
-        <h1 id="page-title" tabIndex={-1}>Islamic history</h1>
-        <p className="history-home__description">Explore the caliphs and the family connections that bring each period into focus.</p>
+        <p className="history-home__eyebrow type-eyebrow">People · Families · Periods</p>
+        <h1 className="type-display" id="page-title" tabIndex={-1}>Islamic history</h1>
+        <p className="history-home__description type-body">Explore the caliphs and the family connections that bring each period into focus.</p>
       </section>
       <nav className="period-grid" aria-label="Historical periods">
         {periods.map((period, index) => (
@@ -44,19 +44,19 @@ export function LandingPage({ periods }: { periods: PeriodDefinition[] }) {
             aria-label={`Explore ${period.title} lineage tree`}
             key={period.id}
           >
-            <div className="period-card__top"><span>Period {String(index + 1).padStart(2, '0')}</span><span className="period-card__arrow" aria-hidden="true">↗</span></div>
+            <span className="period-card__top type-eyebrow">Period {String(index + 1).padStart(2, '0')}</span>
             <LineageMark variant={period.id} />
             <div className="period-card__copy">
-              <h2>{period.title}</h2>
-              <p>{period.description}</p>
+              <h2 className="type-title">{period.title}</h2>
+              <p className="type-callout">{period.description}</p>
             </div>
-            <span className="period-card__action">Explore tree <span aria-hidden="true">→</span></span>
+            <span className="period-card__action type-callout">Explore tree <span aria-hidden="true">→</span></span>
           </motion.a>
         ))}
       </nav>
       <footer className="history-home__footer">
         <span className="history-home__footer-mark" aria-hidden="true">↳</span>
-        <p>Each line connects a father and child.<br />Caliph badges distinguish office from family membership.</p>
+        <p className="type-caption">Each line connects a father and child.<br />Caliph badges distinguish office from family membership.</p>
       </footer>
     </div>
   )
