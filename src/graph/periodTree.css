@@ -17,3 +17,38 @@
   background: #78716c;
   border: none;
 }
+
+.period-tree {
+  --details-panel-width: min(26rem, 55vw);
+}
+
+.details-panel {
+  position: fixed;
+  inset: 0 0 0 auto;
+  z-index: 50;
+  width: var(--details-panel-width);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding: 2rem max(2rem, env(safe-area-inset-right)) max(2rem, env(safe-area-inset-bottom)) 2rem;
+  border-width: 0 0 0 1px;
+}
+
+/* The tree stays usable beside the panel, and its floating controls never sit under it. */
+@media (min-width: 48rem) {
+  .period-tree .react-flow__panel.top.right,
+  .period-tree .react-flow__panel.bottom.center {
+    transition: translate 300ms ease-out;
+  }
+  .period-tree[data-details-open] .react-flow__panel.top.right {
+    translate: calc(-1 * var(--details-panel-width)) 0;
+  }
+  .period-tree[data-details-open] .react-flow__panel.bottom.center {
+    translate: calc(var(--details-panel-width) / -2) 0;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .period-tree .react-flow__panel.top.right,
+  .period-tree .react-flow__panel.bottom.center {
+    transition: none;
+  }
+}

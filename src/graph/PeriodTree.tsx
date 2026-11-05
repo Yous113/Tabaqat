@@ -1,4 +1,5 @@
 import { useCallback, useMemo, useState } from 'react'
+import { AnimatePresence } from 'motion/react'
 import { Background, Controls, Panel, ReactFlow, type ReactFlowInstance } from '@xyflow/react'
 import { connections, people, periods, tenures } from '../data/lineage'
 import type { PeriodId } from '../data/types'
@@ -26,7 +27,7 @@ export function PeriodTree({ periodId }: { periodId: PeriodId }) {
   const selectedPerson = selectedId ? people.find(({ id }) => id === selectedId) : undefined
 
   return (
-    <section aria-label={`${period.title} lineage tree`} className="period-tree relative h-full min-h-0 w-full bg-[#f7f4ec]">
+    <section aria-label={`${period.title} lineage tree`} data-details-open={selectedPerson ? '' : undefined} className="period-tree relative h-full min-h-0 w-full bg-[#f7f4ec]">
       <ReactFlow<PersonNode>
         nodes={graph.nodes} edges={graph.edges} nodeTypes={nodeTypes}
         nodesDraggable={false} nodesConnectable={false} elementsSelectable={false}
@@ -47,7 +48,9 @@ export function PeriodTree({ periodId }: { periodId: PeriodId }) {
           Drag to explore · Pinch to zoom · Tap a person
         </Panel>
       </ReactFlow>
-      {selectedPerson && <PersonDetails key={selectedPerson.id} person={selectedPerson} tenures={tenures.filter(({ personId }) => personId === selectedPerson.id)} onClose={closePerson} />}
+      <AnimatePresence>
+        {selectedPerson && <PersonDetails key="details" person={selectedPerson} tenures={tenures.filter(({ personId }) => personId === selectedPerson.id)} onClose={closePerson} />}
+      </AnimatePresence>
     </section>
   )
 }

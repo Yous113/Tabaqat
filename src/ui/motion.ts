@@ -8,7 +8,8 @@ export const springs = {
   press: { type: 'spring', bounce: 0, duration: 0.15 },
 } satisfies Record<string, Transition>
 
-const gentleFade: Transition = { duration: 0.15, ease: 'easeOut' }
+/** Replaces springs when a reader asks for reduced motion. */
+export const gentleFade: Transition = { duration: 0.15, ease: 'easeOut' }
 
 /**
  * Motion props for anything pressable: spread them onto a `motion.a` or
