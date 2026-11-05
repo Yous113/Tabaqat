@@ -79,3 +79,19 @@ test.each([
   await waitFor(() => expect(control.style.transform).toMatch(/scale\(0\.9\d*\)/))
   fireEvent.pointerCancel(window, { isPrimary: true, pointerType: 'mouse' })
 })
+
+// A browser starts dragging a link after a few pixels, which swallows the click.
+test('a slightly unsteady mouse press still opens links, because none of them can be dragged away', async () => {
+  const user = userEvent.setup()
+  render(<App />)
+  const periodLinks = screen.getAllByRole('link', { name: /^Explore / })
+  expect(periodLinks.map((link) => link.getAttribute('draggable'))).toEqual(['false', 'false', 'false'])
+
+  await user.click(periodLinks[0])
+  expect(screen.getByRole('link', { name: 'Islamic history' }).getAttribute('draggable')).toBe('false')
+  cleanup()
+
+  window.history.replaceState(null, '', '/periods/unknown')
+  render(<App />)
+  expect(screen.getByRole('link', { name: 'Islamic history' }).getAttribute('draggable')).toBe('false')
+})

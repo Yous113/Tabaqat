@@ -60,6 +60,7 @@ a, button { touch-action: manipulation; }
   background: var(--period-surface);
   color: var(--period-ink);
   text-decoration: none;
+  user-select: none;
   transition: box-shadow 200ms ease-out;
 }
 .period-card[data-period='umayyad'] { --period-ink: #845b2d; --period-surface: #f1e5ce; }
@@ -125,7 +126,8 @@ a, button { touch-action: manipulation; }
   .history-home-link { padding: 0.5rem 0.625rem; }
   /* Title beside the way home, description on its own row: the shortest header that keeps both. */
   .history-period__heading { display: contents; }
-  .history-period__heading h1 { flex: 1 1 0; min-width: 0; }
+  /* Takes its own row rather than clipping when enlarged text won't fit beside the way home. */
+  .history-period__heading h1 { flex: 1 1 auto; min-width: 0; }
   .history-period__heading p { flex: 1 0 100%; margin: 0; }
 }
 /* Only reached with very large text on a phone: keep some of the tree in view. */

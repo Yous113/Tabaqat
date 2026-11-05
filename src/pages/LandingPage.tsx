@@ -37,6 +37,7 @@ export function LandingPage({ periods }: { periods: PeriodDefinition[] }) {
         {periods.map((period, index) => (
           <motion.a
             {...pressFeedback}
+            draggable={false}
             className="period-card"
             data-period={period.id}
             data-app-link

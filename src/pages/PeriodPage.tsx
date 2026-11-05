@@ -23,7 +23,7 @@ export function PeriodPage({ period }: { period: PeriodDefinition }) {
   return (
     <>
       <header ref={header} className="history-period__header material">
-        <motion.a {...pressFeedback} className="history-home-link" href="/" data-app-link><span aria-hidden="true">←</span> Islamic history</motion.a>
+        <motion.a {...pressFeedback} draggable={false} className="history-home-link" href="/" data-app-link><span aria-hidden="true">←</span> Islamic history</motion.a>
         <div className="history-period__heading">
           <h1 className="type-headline" id="page-title" tabIndex={-1}>{period.title}</h1>
           <p className="type-caption">{period.description} · Father-to-child lineage</p>
