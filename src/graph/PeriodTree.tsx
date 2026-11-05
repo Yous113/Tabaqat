@@ -7,14 +7,21 @@ import { createLineageGraph, type PersonNode } from './createLineageGraph'
 import { selectPeriodLineage } from './selectPeriodLineage'
 import { PersonCard } from './PersonCard'
 import { PersonDetails } from './PersonDetails'
-import { fitAllView, focusView, revealShift } from './treeView'
+import { fitAllView, focusView, revealShift, visibleArea, type Covered } from './treeView'
 import { usePressFeedback } from '../ui/motion'
 import { useIsDesktop } from '../ui/useIsDesktop'
 import './periodTree.css'
 
 const nodeTypes = { person: PersonCard }
-/** Room left at the bottom for the hint and zoom controls when revealing a card, in px. */
-const bottomControls = 72
+
+/** The px in 1rem, which follows the reader's text size. */
+const rem = () => Number.parseFloat(getComputedStyle(document.documentElement).fontSize)
+
+/** Measured, because the hint wraps and the zoom controls grow with text size and safe areas. */
+function bottomControlTops(tree: HTMLElement) {
+  const { top } = tree.getBoundingClientRect()
+  return Array.from(tree.querySelectorAll('.react-flow__panel.bottom'), (control) => control.getBoundingClientRect().top - top)
+}
 
 /**
  * The React Flow canvas, memoised apart from the selection: re-rendering it on every
@@ -35,7 +42,7 @@ const TreeCanvas = memo(function TreeCanvas({ period, topInset, onOpen, panelWid
   }, [period, onOpen])
   const pressFeedback = usePressFeedback()
   const duration = useReducedMotion() ? 0 : 250
-  const covered = () => ({ top: topInset, right: panelWidth() })
+  const covered = (): Covered => ({ top: topInset, right: panelWidth() })
   /** Where a reveal is still panning to, so a reader tabbing quickly is measured against that. */
   const panningTo = useRef<Viewport | null>(null)
 
@@ -47,17 +54,13 @@ const TreeCanvas = memo(function TreeCanvas({ period, topInset, onOpen, panelWid
     if (!flow || !id || !target.matches(':focus-visible')) return
     const { x, y, zoom } = panningTo.current ?? flow.getViewport()
     const card = flow.getNodesBounds([id])
+    const pane = { width: currentTarget.clientWidth, height: currentTarget.clientHeight }
     const shift = revealShift({
       left: x + card.x * zoom,
       right: x + (card.x + card.width) * zoom,
       top: y + card.y * zoom,
       bottom: y + (card.y + card.height) * zoom,
-    }, {
-      left: 0,
-      right: currentTarget.clientWidth - panelWidth(),
-      top: topInset,
-      bottom: currentTarget.clientHeight - bottomControls,
-    })
+    }, visibleArea(pane, covered(), bottomControlTops(currentTarget)))
     if (!shift) return
     const next = { x: x + shift.x, y: y + shift.y, zoom }
     panningTo.current = next
@@ -71,7 +74,7 @@ const TreeCanvas = memo(function TreeCanvas({ period, topInset, onOpen, panelWid
       nodes={graph.nodes} edges={graph.edges} nodeTypes={nodeTypes}
       nodesDraggable={false} nodesConnectable={false} elementsSelectable={false}
       nodesFocusable={false} edgesFocusable={false} edgesReconnectable={false}
-      deleteKeyCode={null} onInit={setFlow} fitView fitViewOptions={focusView(period.focusId, { top: topInset, right: 0 })}
+      deleteKeyCode={null} onInit={setFlow} fitView fitViewOptions={focusView(period.focusId, covered(), rem())}
       onNodeClick={(_, node) => onOpen(node.id)} onFocus={revealFocusedCard}
       minZoom={0.02} maxZoom={2} panOnDrag zoomOnPinch
     >
@@ -79,8 +82,8 @@ const TreeCanvas = memo(function TreeCanvas({ period, topInset, onOpen, panelWid
       <Controls className="material--thin" position="bottom-left" showFitView={false} showInteractive={false} />
       <Panel position="top-right">
         <div className="period-tree__controls material--thin" role="group" aria-label="Tree view controls">
-          <motion.button {...pressFeedback} type="button" disabled={!flow} onClick={() => void flow?.fitView({ ...focusView(period.focusId, covered()), duration })}>Reset view</motion.button>
-          <motion.button {...pressFeedback} type="button" disabled={!flow} onClick={() => void flow?.fitView({ ...fitAllView(covered()), duration })}>Fit all</motion.button>
+          <motion.button {...pressFeedback} type="button" disabled={!flow} onClick={() => void flow?.fitView({ ...focusView(period.focusId, covered(), rem()), duration })}>Reset view</motion.button>
+          <motion.button {...pressFeedback} type="button" disabled={!flow} onClick={() => void flow?.fitView({ ...fitAllView(covered(), rem()), duration })}>Fit all</motion.button>
         </div>
       </Panel>
       <Panel position="bottom-center" className="period-tree__hint material--thin type-caption">
