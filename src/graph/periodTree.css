@@ -136,7 +136,9 @@
   .period-tree[data-details-open] .react-flow__panel.bottom.right {
     translate: calc(-1 * var(--details-panel-width)) 0;
   }
+  /* Narrower too, so on a small desktop it wraps rather than reaching the zoom controls. */
   .period-tree[data-details-open] .react-flow__panel.bottom.center {
+    max-width: calc(100% - var(--details-panel-width) - 9rem);
     translate: calc(var(--details-panel-width) / -2) 0;
   }
 }
