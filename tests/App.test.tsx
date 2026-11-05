@@ -63,3 +63,19 @@ test('a period card responds while it is held down, before the press is released
   expect(window.location.pathname).toBe('/')
   fireEvent.pointerCancel(window, { isPrimary: true, pointerType: 'mouse' })
 })
+
+test.each([
+  ['button', 'Reset view'],
+  ['button', 'Fit all'],
+  ['link', 'Islamic history'],
+] as const)('on a period page, the %s %s responds while held down', async (role, name) => {
+  window.history.replaceState(null, '', '/periods/rashidun')
+  render(<App />)
+  const control = screen.getByRole(role, { name })
+  await waitFor(() => expect(control.hasAttribute('disabled')).toBe(false))
+
+  fireEvent.pointerDown(control, { button: 0, isPrimary: true, pointerType: 'mouse' })
+
+  await waitFor(() => expect(control.style.transform).toMatch(/scale\(0\.9\d*\)/))
+  fireEvent.pointerCancel(window, { isPrimary: true, pointerType: 'mouse' })
+})

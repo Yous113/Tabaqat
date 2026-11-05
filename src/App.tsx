@@ -1,9 +1,9 @@
 import { MotionConfig } from 'motion/react'
 import { useEffect, useState, type MouseEvent } from 'react'
 import { periods } from './data/lineage'
-import { PeriodTree } from './graph/PeriodTree'
 import { resolveRoute } from './navigation'
 import { LandingPage } from './pages/LandingPage'
+import { PeriodPage } from './pages/PeriodPage'
 
 function Screen() {
   const [pathname, setPathname] = useState(() => window.location.pathname)
@@ -40,18 +40,7 @@ function Screen() {
   }
 
   if (period) {
-    return (
-      <main className="history-period" onClick={navigate}>
-        <header className="history-period__header">
-          <a className="history-home-link" href="/" data-app-link><span aria-hidden="true">←</span> Islamic history</a>
-          <div className="history-period__heading">
-            <h1 id="page-title" tabIndex={-1}>{period.title}</h1>
-            <p>{period.description} · Father-to-child lineage</p>
-          </div>
-        </header>
-        <div className="history-period__canvas"><PeriodTree key={period.id} periodId={period.id} /></div>
-      </main>
-    )
+    return <main className="history-period" onClick={navigate}><PeriodPage period={period} /></main>
   }
 
   return (
