@@ -81,6 +81,50 @@
   border-width: 0 0 0 1px;
 }
 
+/*
+ * Solid, because it can rise over the header and controls, which are already translucent.
+ * Only the body may scroll, so a touch anywhere else is always a drag.
+ */
+.details-sheet {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-height: 80svh;
+  touch-action: none;
+}
+/* Fills in below the sheet when it is pulled or bounces above its open position. */
+.details-sheet::after {
+  content: '';
+  position: absolute;
+  inset-inline: -1px;
+  top: 100%;
+  height: 100svh;
+  background: inherit;
+}
+.details-sheet__grabber {
+  flex: none;
+  padding-block: 0.625rem 1rem;
+  user-select: none;
+}
+.details-sheet__grabber::before {
+  content: '';
+  display: block;
+  width: 2.5rem;
+  height: 0.3125rem;
+  margin-inline: auto;
+  border-radius: 1rem;
+  background: var(--ink-muted);
+  opacity: 0.4;
+}
+.details-sheet__body {
+  min-height: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding: 0 1.5rem max(1.5rem, env(safe-area-inset-bottom));
+  touch-action: pan-y pinch-zoom;
+}
+
 /* The tree stays usable beside the panel, and its floating controls never sit under it. */
 @media (min-width: 48rem) {
   .period-tree .react-flow__panel.top.right,
@@ -106,6 +150,8 @@
 }
 @media (prefers-contrast: more) {
   .period-tree { --control-divider: var(--ink); }
+  .details-sheet { border-color: var(--ink); }
+  .details-sheet__grabber::before { opacity: 1; }
 }
 /* Only reached with very large text on a phone, where the tree needs the room more. */
 @media (max-width: 15rem) {

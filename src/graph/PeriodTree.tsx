@@ -54,7 +54,7 @@ export function PeriodTree({ periodId, topInset = 0 }: { periodId: PeriodId; top
         </Panel>
       </ReactFlow>
       <AnimatePresence>
-        {selectedPerson && <PersonDetails key="details" person={selectedPerson} tenures={tenures.filter(({ personId }) => personId === selectedPerson.id)} onClose={closePerson} />}
+        {selectedPerson && <PersonDetails key="details" person={selectedPerson} tenures={tenures.filter(({ personId }) => personId === selectedPerson.id)} onClose={closePerson} onReopen={() => openPerson(selectedPerson.id)} />}
       </AnimatePresence>
     </section>
   )

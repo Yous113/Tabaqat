@@ -7,6 +7,8 @@ export type DetailsSurfaceProps = {
   person: Person
   tenures: CaliphTenure[]
   onClose: () => void
+  /** Keeps this person open after onClose, when a reader catches the leaving surface. */
+  onReopen?: () => void
 }
 
 /** The person details surface for this device. Render inside AnimatePresence so it can animate out. */
