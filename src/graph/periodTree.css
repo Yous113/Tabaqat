@@ -128,10 +128,12 @@
 /* The tree stays usable beside the panel, and its floating controls never sit under it. */
 @media (min-width: 48rem) {
   .period-tree .react-flow__panel.top.right,
-  .period-tree .react-flow__panel.bottom.center {
+  .period-tree .react-flow__panel.bottom.center,
+  .period-tree .react-flow__panel.bottom.right {
     transition: translate 300ms ease-out;
   }
-  .period-tree[data-details-open] .react-flow__panel.top.right {
+  .period-tree[data-details-open] .react-flow__panel.top.right,
+  .period-tree[data-details-open] .react-flow__panel.bottom.right {
     translate: calc(-1 * var(--details-panel-width)) 0;
   }
   .period-tree[data-details-open] .react-flow__panel.bottom.center {
@@ -140,7 +142,8 @@
 }
 @media (prefers-reduced-motion: reduce) {
   .period-tree .react-flow__panel.top.right,
-  .period-tree .react-flow__panel.bottom.center {
+  .period-tree .react-flow__panel.bottom.center,
+  .period-tree .react-flow__panel.bottom.right {
     transition: none;
   }
 }
