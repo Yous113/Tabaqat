@@ -1,7 +1,7 @@
 // @vitest-environment jsdom
 import { cleanup, fireEvent, render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import { afterAll, afterEach, beforeAll, expect, test, vi } from 'vitest'
+import { afterAll, afterEach, beforeAll, beforeEach, expect, test, vi } from 'vitest'
 import App from '../src/App'
 
 beforeAll(() => {
@@ -19,6 +19,7 @@ beforeAll(() => {
     removeListener() {},
   }))
 })
+beforeEach(() => window.history.replaceState(null, '', '/'))
 afterEach(cleanup)
 afterAll(() => vi.unstubAllGlobals())
 
@@ -50,5 +51,20 @@ test('with reduced motion, the desktop details panel fades in and out instead of
   await user.keyboard('{Escape}')
   await waitFor(() => expect(Number(panel.style.opacity)).toBeLessThan(1))
   expect(panel.style.transform).toBe('')
-  window.history.replaceState(null, '', '/')
+})
+
+test('with reduced motion, changing page still swaps at once and only fades', async () => {
+  const user = userEvent.setup()
+  render(<App />)
+  const previousCard = screen.getByRole('link', { name: 'Explore Umayyad lineage tree' })
+
+  await user.click(previousCard)
+
+  const title = screen.getByRole('heading', { name: 'Umayyad', level: 1 })
+  expect(document.activeElement).toBe(title)
+  expect(previousCard.closest('[inert]')).not.toBeNull()
+  await waitFor(() => expect(previousCard.isConnected).toBe(false))
+  for (let element: HTMLElement | null = title; element; element = element.parentElement) {
+    expect(element.style.transform).toBe('')
+  }
 })
