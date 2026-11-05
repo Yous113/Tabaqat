@@ -12,7 +12,7 @@ export function PersonCard({ data }: NodeProps<PersonNode>) {
   const appearance = tenures[0] && periodAppearance[tenures[0].periodId]
   // Abbasid reigns stay in the details panel for now.
   const reigns = tenures.filter(({ periodId }) => periodId !== 'abbasid').flatMap(({ reigns }) => reigns).map(formatReign)
-  const color = prophet ? 'border-amber-400 bg-emerald-950 text-white' : appearance?.card ?? 'border-stone-300 bg-[#fffdf8] text-stone-900'
+  const color = prophet ? 'border-amber-400 bg-emerald-950 text-white' : appearance?.card ?? 'border-stone-300 bg-[#fffdf8] text-stone-900 contrast-more:border-(--ink)'
 
   return (
     <article className="relative h-full w-full">

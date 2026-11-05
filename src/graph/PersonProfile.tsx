@@ -28,7 +28,7 @@ export function PersonProfile({ person, tenures, headingId, closeButton, onClose
   closeButton: Ref<HTMLButtonElement>
   onClose: () => void
 }) {
-  const press = usePressFeedback()
+  const pressFeedback = usePressFeedback()
 
   return (
     <>
@@ -37,10 +37,10 @@ export function PersonProfile({ person, tenures, headingId, closeButton, onClose
         <p className="type-eyebrow mb-2">Person details</p>
         <h2 id={headingId} className="type-headline">{person.name} {person.honorific}</h2>
       </div>
-      <motion.button {...press} ref={closeButton} type="button" onClick={onClose} className="min-h-11 min-w-11 rounded-full border border-stone-300 px-3 text-sm hover:bg-stone-100">Close</motion.button>
+      <motion.button {...pressFeedback} ref={closeButton} type="button" onClick={onClose} className="min-h-11 min-w-11 rounded-full border border-stone-300 px-3 text-sm hover:bg-stone-100 contrast-more:border-(--ink)">Close</motion.button>
     </div>
     {person.aliases?.length ? <p className="mb-5">Also known as {person.aliases.join(' · ')}</p> : null}
-    {person.roles?.includes('prophet') && <p className="mb-5 font-semibold text-emerald-900">Prophet</p>}
+    {person.roles?.includes('prophet') && <p className="mb-5 w-fit rounded-full border border-amber-400 bg-emerald-950 px-3 py-1 text-xs font-semibold text-white">Prophet</p>}
     {tenures.length === 0 && <p className="leading-relaxed">Shown as family context. No caliph tenure is recorded for this person.</p>}
     {tenures.map((tenure) => {
       const appearance = periodAppearance[tenure.periodId]
@@ -53,8 +53,8 @@ export function PersonProfile({ person, tenures, headingId, closeButton, onClose
           <p className="type-eyebrow mb-2">Reign · year precision</p>
           <ol className="space-y-3">
             {tenure.reigns.map(({ ah, ce, note }, index) => (
-              <li key={index} className="rounded-xl border border-stone-200 bg-white/60 p-3">
-                <p className="font-medium">{ah.start}–{ah.end} AH <span className="mx-1 text-stone-400">/</span> {ce.start}–{ce.end} CE</p>
+              <li key={index} className="rounded-xl border border-stone-200 bg-[#fffdf8] p-3 contrast-more:border-(--ink)">
+                <p className="font-medium">{ah.start}–{ah.end} AH <span className="mx-1">/</span> {ce.start}–{ce.end} CE</p>
                 {note && <p className="mt-2 text-sm leading-relaxed">{note}</p>}
               </li>
             ))}
