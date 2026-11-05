@@ -1,6 +1,6 @@
 import { motion, useIsPresent, useReducedMotion } from 'motion/react'
 import { useCallback, useEffect, useRef } from 'react'
-import { gentleFade, springs } from '../ui/motion'
+import { settleTransition } from '../ui/motion'
 import type { DetailsSurfaceProps } from './PersonDetails'
 import { PersonProfile } from './PersonProfile'
 
@@ -53,7 +53,7 @@ export function DetailsPanel({ person, tenures, onClose }: DetailsSurfaceProps) 
       initial={reducedMotion ? { opacity: 0 } : { x: '100%' }}
       animate={reducedMotion ? { opacity: 1 } : { x: 0 }}
       exit={reducedMotion ? { opacity: 0 } : { x: '100%' }}
-      transition={reducedMotion ? gentleFade : springs.settle}
+      transition={settleTransition(reducedMotion)}
     >
       <p role="status" className="sr-only">Showing details for {person.name}</p>
       <PersonProfile person={person} tenures={tenures} closeButton={closeButton} onClose={close} />

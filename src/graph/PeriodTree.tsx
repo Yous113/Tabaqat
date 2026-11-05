@@ -1,4 +1,4 @@
-import { memo, useCallback, useMemo, useRef, useState, type FocusEvent } from 'react'
+import { memo, useCallback, useMemo, useRef, useState, type CSSProperties, type FocusEvent } from 'react'
 import { Background, Controls, Panel, ReactFlow, type ReactFlowInstance, type Viewport } from '@xyflow/react'
 import { AnimatePresence, motion, useReducedMotion } from 'motion/react'
 import { connections, people, periods, tenures } from '../data/lineage'
@@ -8,7 +8,7 @@ import { selectPeriodLineage } from './selectPeriodLineage'
 import { PersonCard } from './PersonCard'
 import { PersonDetails } from './PersonDetails'
 import { fitAllView, focusView, revealShift, visibleArea, type Covered } from './treeView'
-import { usePressFeedback } from '../ui/motion'
+import { settleTiming, usePressFeedback } from '../ui/motion'
 import { useIsDesktop } from '../ui/useIsDesktop'
 import './periodTree.css'
 
@@ -106,7 +106,7 @@ export function PeriodTree({ periodId, topInset = 0 }: { periodId: PeriodId; top
   const panelOpen = useIsDesktop() && selectedPerson !== undefined
 
   return (
-    <section ref={section} aria-label={`${period.title} lineage tree`} data-panel-open={panelOpen ? '' : undefined} className="period-tree relative h-full min-h-0 w-full bg-[var(--parchment)]">
+    <section ref={section} aria-label={`${period.title} lineage tree`} data-panel-open={panelOpen ? '' : undefined} className="period-tree relative h-full min-h-0 w-full bg-[var(--parchment)]" style={{ '--panel-timing': settleTiming, '--period-header-height': `${topInset}px` } as CSSProperties}>
       <TreeCanvas period={period} topInset={topInset} onOpen={openPerson} panelWidth={panelWidth} />
       <AnimatePresence>
         {selectedPerson && <PersonDetails key="details" person={selectedPerson} tenures={tenures.filter(({ personId }) => personId === selectedPerson.id)} onClose={closePerson} onReopen={() => openPerson(selectedPerson.id)} />}

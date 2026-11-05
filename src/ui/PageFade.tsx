@@ -1,6 +1,6 @@
 import { AnimatePresence, motion, useIsPresent, useReducedMotion } from 'motion/react'
 import { useEffect, useLayoutEffect, useRef, type ReactNode } from 'react'
-import { gentleFade, springs } from './motion'
+import { settleTransition } from './motion'
 
 function PageLayer({ children }: { children: ReactNode }) {
   const isPresent = useIsPresent()
@@ -32,7 +32,7 @@ function PageLayer({ children }: { children: ReactNode }) {
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
-      transition={reducedMotion ? gentleFade : springs.settle}
+      transition={settleTransition(reducedMotion)}
     >
       {children}
     </motion.div>

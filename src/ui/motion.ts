@@ -1,4 +1,4 @@
-import { useReducedMotion, type Transition } from 'motion/react'
+import { spring, useReducedMotion, type Transition } from 'motion/react'
 
 /** Critically damped, except `momentum`: nothing overshoots unless a gesture earned it. */
 export const springs = {
@@ -10,11 +10,21 @@ export const springs = {
   momentum: { type: 'spring', bounce: 0.2, visualDuration: 0.3 },
 } satisfies Record<string, Transition>
 
+/**
+ * `springs.settle` as a CSS `transition` timing, duration and curve, for things that
+ * move alongside it in CSS. `spring` takes milliseconds here, unlike a Transition.
+ */
+export const settleTiming = String(spring({ keyframes: [0, 1], bounce: springs.settle.bounce, duration: springs.settle.duration * 1000 }))
+
 /** Replaces springs when a reader asks for reduced motion. */
 export const gentleFade: Transition = { duration: 0.15, ease: 'easeOut' }
 
+/** The transition for anything settling into place, as a whole surface or page does. */
+export const settleTransition = (reducedMotion: boolean | null) => (reducedMotion ? gentleFade : springs.settle)
+
 /** Follows a drag past a boundary, giving way less the further it goes. */
-export function rubberband(overshoot: number, dimension: number, constant = 0.55) {
+export function rubberband(overshoot: number, dimension: number) {
+  const constant = 0.55
   return (overshoot * dimension * constant) / (dimension + constant * Math.abs(overshoot))
 }
 

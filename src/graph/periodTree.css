@@ -125,11 +125,14 @@
   touch-action: pan-y pinch-zoom;
 }
 
-/* The tree stays usable beside the panel, and its floating controls never sit under it. */
+/*
+ * The tree stays usable beside the panel, and its floating controls never sit under it.
+ * They move on the panel's own spring, set by PeriodTree, so the two read as one motion.
+ */
 .period-tree .react-flow__panel.top.right,
 .period-tree .react-flow__panel.bottom.center,
 .period-tree .react-flow__panel.bottom.right {
-  transition: translate 300ms ease-out;
+  transition: translate var(--panel-timing);
 }
 .period-tree[data-panel-open] .react-flow__panel.top.right,
 .period-tree[data-panel-open] .react-flow__panel.bottom.right {

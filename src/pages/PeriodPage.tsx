@@ -1,5 +1,5 @@
 import { motion } from 'motion/react'
-import { useLayoutEffect, useRef, useState, type CSSProperties } from 'react'
+import { useLayoutEffect, useRef, useState } from 'react'
 import type { PeriodDefinition } from '../data/types'
 import { PeriodTree } from '../graph/PeriodTree'
 import { usePressFeedback } from '../ui/motion'
@@ -29,7 +29,7 @@ export function PeriodPage({ period }: { period: PeriodDefinition }) {
           <p className="type-caption">{period.description} · Father-to-child lineage</p>
         </div>
       </header>
-      <div className="history-period__canvas" style={{ '--period-header-height': `${headerHeight}px` } as CSSProperties}>
+      <div className="history-period__canvas">
         <PeriodTree key={period.id} periodId={period.id} topInset={headerHeight} />
       </div>
     </>

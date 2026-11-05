@@ -1,5 +1,6 @@
 /** How far a released gesture would keep travelling. Apple's exponential decay, at its scroll-like rate. */
-function projectMomentum(velocity: number, decelerationRate = 0.998) {
+function projectMomentum(velocity: number) {
+  const decelerationRate = 0.998
   return ((velocity / 1000) * decelerationRate) / (1 - decelerationRate)
 }
 
