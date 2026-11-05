@@ -1,4 +1,6 @@
+import { motion } from 'motion/react'
 import type { PeriodDefinition } from '../data/types'
+import { usePressFeedback } from '../ui/motion'
 
 function LineageMark({ variant }: { variant: string }) {
   const middle = variant === 'umayyad' ? 68 : 80
@@ -18,6 +20,8 @@ function LineageMark({ variant }: { variant: string }) {
 }
 
 export function LandingPage({ periods }: { periods: PeriodDefinition[] }) {
+  const pressFeedback = usePressFeedback({ lift: true })
+
   return (
     <div className="history-home">
       <header className="history-home__masthead">
@@ -31,7 +35,8 @@ export function LandingPage({ periods }: { periods: PeriodDefinition[] }) {
       </section>
       <nav className="period-grid" aria-label="Historical periods">
         {periods.map((period, index) => (
-          <a
+          <motion.a
+            {...pressFeedback}
             className="period-card"
             data-period={period.id}
             data-app-link
@@ -46,7 +51,7 @@ export function LandingPage({ periods }: { periods: PeriodDefinition[] }) {
               <p>{period.description}</p>
             </div>
             <span className="period-card__action">Explore tree <span aria-hidden="true">→</span></span>
-          </a>
+          </motion.a>
         ))}
       </nav>
       <footer className="history-home__footer">

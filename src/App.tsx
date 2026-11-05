@@ -1,10 +1,11 @@
+import { MotionConfig } from 'motion/react'
 import { useEffect, useState, type MouseEvent } from 'react'
 import { periods } from './data/lineage'
 import { PeriodTree } from './graph/PeriodTree'
 import { resolveRoute } from './navigation'
 import { LandingPage } from './pages/LandingPage'
 
-function App() {
+function Screen() {
   const [pathname, setPathname] = useState(() => window.location.pathname)
   const route = resolveRoute(pathname)
   const period = route.kind === 'period'
@@ -60,6 +61,14 @@ function App() {
       <p>Choose Rashidun, Umayyad, or Abbasid from the period chooser.</p>
       <a className="history-home-link" href="/" data-app-link><span aria-hidden="true">←</span> Islamic history</a>
     </main>
+  )
+}
+
+function App() {
+  return (
+    <MotionConfig reducedMotion="user">
+      <Screen />
+    </MotionConfig>
   )
 }
 
