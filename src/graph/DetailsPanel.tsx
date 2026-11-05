@@ -4,10 +4,6 @@ import { gentleFade, springs } from '../ui/motion'
 import type { DetailsSurfaceProps } from './PersonDetails'
 import { PersonProfile } from './PersonProfile'
 
-function focusPersonCard(personId: string) {
-  document.querySelector<HTMLElement>(`.react-flow__node[data-id="${personId}"] button`)?.focus({ preventScroll: true })
-}
-
 /**
  * Desktop presentation: a non-modal region beside the tree. Nothing dims or traps
  * focus, so it stays mounted while the selection changes. Render it directly inside
@@ -22,7 +18,12 @@ export function DetailsPanel({ person, tenures, onClose }: DetailsSurfaceProps) 
   const close = useCallback(() => {
     // A reader who has moved on into the tree keeps their place.
     const focused = document.activeElement
-    if (!focused || focused === document.body || panel.current?.contains(focused)) focusPersonCard(person.id)
+    if (!focused || focused === document.body || panel.current?.contains(focused)) {
+      // Within this tree, because a fading page can leave a second copy in the document.
+      panel.current?.closest('.period-tree')
+        ?.querySelector<HTMLElement>(`.react-flow__node[data-id="${person.id}"] button`)
+        ?.focus({ preventScroll: true })
+    }
     onClose()
   }, [person.id, onClose])
 

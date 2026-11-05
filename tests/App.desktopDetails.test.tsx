@@ -120,3 +120,19 @@ test('choosing a person while the panel is leaving brings it straight back', asy
   await new Promise((resolve) => setTimeout(resolve, 700))
   expect(details('ʿAlī')).toBe(panel)
 })
+
+test('going Back with details open lands on the previous page title, not the old tree', async () => {
+  window.history.replaceState(null, '', '/')
+  const user = userEvent.setup()
+  render(<App />)
+  await user.click(screen.getByRole('link', { name: 'Explore Rashidun lineage tree' }))
+  await choose(user, 'Abū Bakr')
+  expect(details('Abū Bakr')).toBeTruthy()
+
+  window.history.back()
+
+  const title = await screen.findByRole('heading', { name: 'Islamic history', level: 1 })
+  expect(document.activeElement).toBe(title)
+  await waitFor(() => expect(document.querySelector('.period-tree')).toBeNull())
+  expect(document.activeElement).toBe(title)
+})
