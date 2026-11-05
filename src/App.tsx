@@ -8,7 +8,7 @@ import { NotFoundPage } from './pages/NotFoundPage'
 import { PeriodPage } from './pages/PeriodPage'
 import { PageFade } from './ui/PageFade'
 
-function Screen() {
+function Router() {
   const [pathname, setPathname] = useState(() => window.location.pathname)
   const route = resolveRoute(pathname)
   const period = route.kind === 'period'
@@ -37,10 +37,10 @@ function Screen() {
     setPathname(url.pathname)
   }
 
-  return <PageFade pageKey={pathname}><Page route={route} period={period} navigate={navigate} /></PageFade>
+  return <PageFade pageKey={pathname}><CurrentPage route={route} period={period} navigate={navigate} /></PageFade>
 }
 
-function Page({ route, period, navigate }: {
+function CurrentPage({ route, period, navigate }: {
   route: AppRoute
   period: PeriodDefinition | undefined
   navigate: MouseEventHandler<HTMLElement>
@@ -59,7 +59,7 @@ function Page({ route, period, navigate }: {
 function App() {
   return (
     <MotionConfig reducedMotion="user">
-      <Screen />
+      <Router />
     </MotionConfig>
   )
 }
