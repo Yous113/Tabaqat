@@ -1,8 +1,8 @@
 import dagre from '@dagrejs/dagre'
 import type { Edge, Node } from '@xyflow/react'
-import type { FatherConnection, Person } from '../data/types'
+import type { CaliphTenure, FatherConnection, Person } from '../data/types'
 
-export type PersonNode = Node<{ person: Person }, 'person'>
+export type PersonNode = Node<{ person: Person; tenures?: CaliphTenure[]; onOpen?: (id: string) => void }, 'person'>
 
 export interface LineageGraph {
   nodes: PersonNode[]
@@ -12,9 +12,10 @@ export interface LineageGraph {
 export function createLineageGraph(
   people: Person[],
   connections: FatherConnection[],
+  tenures?: CaliphTenure[],
 ): LineageGraph {
   const nodeWidth = 240
-  const nodeHeight = 96
+  const nodeHeight = 160
   const layout = new dagre.graphlib.Graph()
     .setDefaultEdgeLabel(() => ({}))
     .setGraph({ rankdir: 'TB', ranksep: 56, nodesep: 40 })
@@ -37,7 +38,7 @@ export function createLineageGraph(
         y: layout.node(person.id).y - nodeHeight / 2,
       },
       style: { width: nodeWidth, height: nodeHeight },
-      data: { person },
+      data: { person, ...(tenures ? { tenures: tenures.filter(({ personId }) => personId === person.id) } : {}) },
     })),
     edges: connections.map((connection) => ({
       id: `father:${connection.from}:${connection.to}`,

@@ -1,0 +1,185 @@
+.period-tree {
+  --xy-controls-button-background-color: transparent;
+  --xy-controls-button-background-color-hover: var(--control-hover);
+  --xy-controls-button-border-color: var(--control-divider);
+  --xy-controls-button-color: var(--ink);
+  --xy-controls-button-color-hover: var(--ink);
+  --control-hover: color-mix(in srgb, var(--ink) 8%, transparent);
+  --control-divider: color-mix(in srgb, var(--ink) 15%, transparent);
+  /* What the hint leaves free so it stays centred and clear of the zoom controls. */
+  --hint-side-room: 9rem;
+}
+
+/* Panels sit on the visible part of the tree: under the header, inside the safe area. */
+.period-tree .react-flow__panel.top { margin-top: calc(var(--period-header-height, 0px) + 0.75rem); }
+.period-tree .react-flow__panel.right { margin-right: max(0.75rem, env(safe-area-inset-right)); }
+.period-tree .react-flow__panel.bottom { margin-bottom: max(0.75rem, env(safe-area-inset-bottom)); }
+.period-tree .react-flow__panel.left { margin-left: max(0.75rem, env(safe-area-inset-left)); }
+
+.period-tree__controls {
+  display: flex;
+  overflow: hidden;
+  border-radius: 0.75rem;
+}
+.period-tree__controls button {
+  min-height: 2.75rem;
+  padding: 0.5rem 0.75rem;
+  color: inherit;
+  font-size: 0.875rem;
+  font-weight: 600;
+}
+.period-tree__controls button + button { border-left: 1px solid var(--control-divider); }
+.period-tree__controls button:disabled { opacity: 0.5; }
+.period-tree__controls button:active:not(:disabled),
+.period-tree .react-flow__controls-button:active { background: var(--control-hover); }
+
+.period-tree .react-flow__controls {
+  overflow: hidden;
+  border-radius: 0.75rem;
+}
+.period-tree .react-flow__controls-button {
+  width: 2.75rem;
+  height: 2.75rem;
+}
+.period-tree .react-flow__controls-button svg {
+  max-width: 0.875rem;
+  max-height: 0.875rem;
+}
+/* Both control groups clip their corners, which would clip an outer focus ring too. */
+.period-tree__controls button:focus-visible,
+.period-tree .react-flow__controls-button:focus-visible { outline-offset: -3px; }
+
+.period-tree .react-flow__panel.period-tree__hint {
+  left: 50%;
+  max-width: min(65%, calc(100% - var(--hint-side-room)));
+  margin-inline: 0;
+  padding: 0.5rem 0.75rem;
+  border-radius: 0.75rem;
+  font-weight: 500;
+  text-align: center;
+  pointer-events: none;
+  transform: translateX(-50%);
+}
+
+.period-tree .react-flow__handle {
+  width: 6px;
+  height: 6px;
+  background: #78716c;
+  border: none;
+}
+
+.period-tree {
+  --details-panel-width: min(26rem, 55vw);
+}
+
+.details-panel {
+  position: fixed;
+  inset: var(--period-header-height, 0px) 0 0 auto;
+  z-index: 50;
+  width: var(--details-panel-width);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding: 2rem max(2rem, env(safe-area-inset-right)) max(2rem, env(safe-area-inset-bottom)) 2rem;
+  border-width: 0 0 0 1px;
+}
+
+/*
+ * Solid, because it can rise over the header and controls, which are already translucent.
+ * Only the body may scroll, so a touch anywhere else is always a drag.
+ */
+.details-sheet {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-height: 80svh;
+  touch-action: none;
+}
+/* Fills in below the sheet when it is pulled or bounces above its open position. */
+.details-sheet::after {
+  content: '';
+  position: absolute;
+  inset-inline: -1px;
+  top: 100%;
+  height: 100svh;
+  background: inherit;
+}
+.details-sheet__grabber {
+  flex: none;
+  padding-block: 0.625rem 1rem;
+  user-select: none;
+}
+.details-sheet__grabber::before {
+  content: '';
+  display: block;
+  width: 2.5rem;
+  height: 0.3125rem;
+  margin-inline: auto;
+  border-radius: 1rem;
+  background: var(--ink-muted);
+  opacity: 0.4;
+}
+.details-sheet__body {
+  min-height: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding: 0 1.5rem max(1.5rem, env(safe-area-inset-bottom));
+  touch-action: pan-y pinch-zoom;
+}
+
+/*
+ * The tree stays usable beside the panel, and its floating controls never sit under it.
+ * They move on the panel's own spring, set by PeriodTree, so the two read as one motion.
+ */
+.period-tree .react-flow__panel.top.right,
+.period-tree .react-flow__panel.bottom.center,
+.period-tree .react-flow__panel.bottom.right {
+  transition: translate var(--panel-timing);
+}
+.period-tree[data-panel-open] .react-flow__panel.top.right,
+.period-tree[data-panel-open] .react-flow__panel.bottom.right {
+  translate: calc(-1 * var(--details-panel-width)) 0;
+}
+/* Narrower too, so on a small desktop it wraps rather than reaching the zoom controls. */
+.period-tree[data-panel-open] .react-flow__panel.bottom.center {
+  max-width: calc(100% - var(--details-panel-width) - var(--hint-side-room));
+  translate: calc(var(--details-panel-width) / -2) 0;
+}
+@media (prefers-reduced-motion: reduce) {
+  .period-tree .react-flow__panel.top.right,
+  .period-tree .react-flow__panel.bottom.center,
+  .period-tree .react-flow__panel.bottom.right {
+    transition: none;
+  }
+}
+
+@media (hover: hover) {
+  .period-tree__controls button:hover:not(:disabled) { background: var(--control-hover); }
+}
+@media (prefers-contrast: more) {
+  .period-tree { --control-divider: var(--ink); }
+  .details-sheet { border-color: var(--ink); }
+  .details-sheet__grabber::before { opacity: 1; }
+}
+/*
+ * Only reached with very large text on a phone. The hint is too narrow to centre between
+ * the zoom controls and the edge, so it wraps beside them, above the attribution. Header,
+ * tree controls and hint then need about 25rem of height: on shorter screens the description, then the hint,
+ * give way so nothing covers Reset view.
+ */
+@media (max-width: 15rem) {
+  .period-tree .react-flow__panel.period-tree__hint {
+    right: 0;
+    left: auto;
+    max-width: calc(100% - 5.5rem);
+    margin-right: max(0.75rem, env(safe-area-inset-right));
+    margin-bottom: calc(max(0.75rem, env(safe-area-inset-bottom)) + 1.25rem);
+    transform: none;
+  }
+  @media (max-height: 25.5rem) {
+    .history-period__heading p { display: none; }
+  }
+  @media (max-height: 20.75rem) {
+    .period-tree .react-flow__panel.period-tree__hint { display: none; }
+  }
+}

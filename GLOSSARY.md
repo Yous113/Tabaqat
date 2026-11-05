@@ -22,3 +22,12 @@ A designation of a person's religious status or historical office, such as proph
 
 **Rashidun caliph**:
 A person who served as caliph during the Rashidun period. In Tabaqat, this includes Abū Bakr, ʿOmar, ʿUthmān, ʿAlī, and Al-Ḥasan.
+
+**Period**:
+A named historical grouping, such as Rashidun, Umayyad, or Abbasid, whose caliphs and related family branches are considered together.
+
+**Period lineage tree**:
+A lineage tree showing the family branches associated with a selected period, together with ancestors needed to explain their connections. It represents descent, not the order in which caliphs ruled.
+
+**Reign**:
+A span of years during which a person held the caliphate or claimed it.

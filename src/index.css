@@ -1,12 +1,132 @@
 @import 'tailwindcss';
 @import '@xyflow/react/dist/style.css';
+@import './ui/foundation.css';
 
 :root {
   font-family: system-ui, sans-serif;
-  color: #1c1917;
-  background-color: #fafaf9;
+  color: var(--ink);
+  background-color: var(--parchment);
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+/* Keeps a keyboard-focused card clear of the sticky masthead. */
+html { scroll-padding-top: 5rem; }
+body { margin: 0; }
+button, a { -webkit-tap-highlight-color: transparent; }
+a, button { touch-action: manipulation; }
+:focus-visible { outline: 3px solid #33785d; outline-offset: 4px; }
+#page-title:focus { outline: none; }
+
+.history-home {
+  --gutter: 1.75rem;
+  max-width: 74.5rem;
+  margin: 0 auto;
+  padding: max(0.75rem, env(safe-area-inset-top)) max(var(--gutter), env(safe-area-inset-right)) max(2rem, env(safe-area-inset-bottom)) max(var(--gutter), env(safe-area-inset-left));
+}
+.history-home__masthead {
+  position: sticky;
+  top: max(0.75rem, env(safe-area-inset-top));
+  z-index: 10;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.25rem 1rem;
+  min-height: 3rem;
+  padding: 0.5rem 1rem;
+  border-radius: 1.25rem;
+}
+.history-home__brand { display: inline-flex; gap: 0.625rem; align-items: center; font-size: 1.0625rem; font-weight: 650; letter-spacing: -0.01em; }
+.history-home__brand svg { width: 1.5em; height: 1.5em; }
+.history-home__intro { max-width: 45rem; margin: 3.5rem 0 2.5rem; }
+.history-home__eyebrow { margin: 0 0 1rem; color: var(--ink-muted); }
+.history-home__intro h1 { margin: 0; }
+.history-home__description { max-width: 30rem; margin: 1.25rem 0 0; color: var(--ink-muted); }
+.period-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 17rem), 1fr)); gap: 1.25rem; }
+.period-card {
+  --period-ink: #355b44;
+  --period-surface: #e7eddf;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  min-width: 0;
+  min-height: 23rem;
+  padding: 1.5rem;
+  border: 1px solid color-mix(in srgb, var(--period-ink) 10%, transparent);
+  border-radius: 1.5rem;
+  background: var(--period-surface);
+  color: var(--period-ink);
+  text-decoration: none;
+  user-select: none;
+  transition: box-shadow 200ms ease-out;
+}
+.period-card[data-period='umayyad'] { --period-ink: #845b2d; --period-surface: #f1e5ce; }
+.period-card[data-period='abbasid'] { --period-ink: #4d5379; --period-surface: #e6e7f0; }
+.period-card__lineage { align-self: center; width: 10.5rem; max-width: 100%; height: auto; margin-block: auto; opacity: 0.88; }
+.period-card__copy { min-width: 0; overflow-wrap: break-word; }
+.period-card__copy h2 { margin: 0 0 0.375rem; }
+.period-card__copy p { margin: 0; }
+.period-card__action { display: flex; align-items: center; justify-content: space-between; gap: 0.75rem; padding-top: 0.875rem; border-top: 1px solid color-mix(in srgb, var(--period-ink) 16%, transparent); font-weight: 600; }
+.period-card__action > span { font-size: 1.2em; font-weight: 400; }
+.history-home__footer { display: flex; align-items: center; gap: 0.75rem; margin-top: 2.25rem; color: var(--ink-muted); }
+.history-home__footer-mark { font-size: 1.75rem; line-height: 1; }
+.history-home__footer p { margin: 0; }
+
+.history-period { position: relative; height: 100svh; min-height: 16.25rem; overflow: hidden; }
+/* Floats over the tree, which fills the page. Stays below the details surface, so never give the canvas a z-index. */
+.history-period__header { position: absolute; inset: 0 0 auto; z-index: 10; display: flex; flex-wrap: wrap; align-items: center; gap: 0.625rem 1.5rem; padding: max(0.75rem, env(safe-area-inset-top)) max(1.5rem, env(safe-area-inset-right)) 0.75rem max(1.5rem, env(safe-area-inset-left)); border-width: 0 0 1px; }
+.history-home-link { display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0; gap: 0.5rem; min-height: 2.75rem; padding: 0.5rem 0.875rem; border: 1px solid color-mix(in srgb, var(--ink) 18%, transparent); border-radius: 0.75rem; color: var(--ink); font-size: 0.8125rem; font-weight: 600; text-decoration: none; }
+.history-period__heading { flex: 1 1 10rem; min-width: 0; }
+.history-period__heading h1 { margin: 0; }
+.history-period__heading p { margin: 0.125rem 0 0; font-weight: 500; }
+.history-period__canvas { position: absolute; inset: 0; }
+.history-not-found {
+  --gutter: 1.75rem;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  max-width: 45rem;
+  min-height: 100svh;
+  margin: 0 auto;
+  padding: max(2rem, env(safe-area-inset-top)) max(var(--gutter), env(safe-area-inset-right)) max(2rem, env(safe-area-inset-bottom)) max(var(--gutter), env(safe-area-inset-left));
+}
+.history-not-found h1 { margin: 0; text-wrap: balance; }
+.history-not-found__message { max-width: 30rem; margin: 1.25rem 0 2rem; color: var(--ink-muted); }
+.history-not-found__home { display: inline-flex; align-items: center; gap: 0.5rem; min-height: 2.75rem; padding: 0.5rem 1.125rem; border-radius: 0.875rem; background: var(--ink); color: var(--parchment); font-weight: 600; text-decoration: none; transition: background-color 200ms ease-out; }
+
+@media (hover: hover) {
+  .period-card:hover { box-shadow: 0 0.875rem 1.875rem -1.125rem color-mix(in srgb, var(--period-ink) 40%, transparent); }
+  .history-home-link:hover { background: color-mix(in srgb, var(--ink) 8%, transparent); }
+  .history-not-found__home:hover { background: color-mix(in srgb, var(--ink) 88%, var(--parchment)); }
+}
+@media (prefers-contrast: more) {
+  .period-card { border-color: var(--period-ink); }
+  .period-card__lineage { opacity: 1; }
+  .history-home-link { border-color: var(--ink); }
+}
+@media (max-width: 40rem) {
+  .history-home, .history-not-found { --gutter: 1rem; }
+  .history-home__edition { display: none; }
+  .history-home__intro { margin: 2rem 0 1.5rem; }
+  .history-home__description { margin-top: 1rem; }
+  .period-grid { gap: 0.875rem; }
+  /* Three periods within reach: copy and mark share a row, and wrap if text is enlarged. */
+  .period-card { flex-flow: row wrap; align-items: center; gap: 0.75rem 1rem; min-height: 0; padding: 1.25rem; }
+  .period-card__top, .period-card__action { flex: 1 0 100%; }
+  .period-card__copy { flex: 1 1 11rem; }
+  .period-card__lineage { order: 1; flex: 0 1 6.5rem; }
+  .period-card__action { order: 2; padding-top: 0.75rem; }
+  .history-home__footer { margin-top: 1.75rem; align-items: flex-start; }
+  .history-period__header { padding: max(0.625rem, env(safe-area-inset-top)) max(0.875rem, env(safe-area-inset-right)) 0.625rem max(0.875rem, env(safe-area-inset-left)); gap: 0.5rem 1rem; }
+  .history-home-link { padding: 0.5rem 0.625rem; }
+  /* Title beside the way home, description on its own row: the shortest header that keeps both. */
+  .history-period__heading { display: contents; }
+  /* Takes its own row rather than clipping when enlarged text won't fit beside the way home. */
+  .history-period__heading h1 { flex: 1 1 auto; min-width: 0; }
+  .history-period__heading p { flex: 1 0 100%; margin: 0; }
 }
