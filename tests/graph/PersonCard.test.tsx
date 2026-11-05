@@ -1,6 +1,6 @@
 // @vitest-environment jsdom
 import { afterEach, expect, test } from 'vitest'
-import { cleanup, render, screen } from '@testing-library/react'
+import { cleanup, fireEvent, render, screen, waitFor } from '@testing-library/react'
 import { ReactFlowProvider, type NodeProps } from '@xyflow/react'
 import { people, tenures } from '../../src/data/lineage'
 import type { PersonNode } from '../../src/graph/createLineageGraph'
@@ -38,4 +38,14 @@ test('leaves reigns off Abbasid cards', () => {
 
 test('leaves cards without a tenure unchanged', () => {
   expect(renderCard('muhammad-ibn-abdullah').textContent).not.toContain('AH')
+})
+
+test('responds while held down, before the press is released', async () => {
+  const card = renderCard('omar-ibn-khattab')
+  expect(card.style.transform).toBe('')
+
+  fireEvent.pointerDown(card, { button: 0, isPrimary: true, pointerType: 'mouse' })
+
+  await waitFor(() => expect(card.style.transform).toMatch(/scale\(0\.9\d*\)/))
+  fireEvent.pointerCancel(window, { isPrimary: true, pointerType: 'mouse' })
 })
