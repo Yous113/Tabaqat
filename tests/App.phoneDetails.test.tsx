@@ -3,14 +3,10 @@ import { cleanup, render, screen, waitFor, within } from '@testing-library/react
 import userEvent from '@testing-library/user-event'
 import { afterAll, afterEach, beforeAll, beforeEach, expect, test, vi } from 'vitest'
 import App from '../src/App'
+import { stubBrowser } from './helpers/browser'
+import { card, choose } from './helpers/personCards'
 
-beforeAll(() => {
-  vi.stubGlobal('ResizeObserver', class {
-    observe() {}
-    unobserve() {}
-    disconnect() {}
-  })
-})
+beforeAll(() => stubBrowser())
 beforeEach(() => {
   window.history.replaceState(null, '', '/periods/rashidun')
   // jsdom has no layout, and a sheet with no height has nowhere to slide.
@@ -21,17 +17,6 @@ afterEach(() => {
   vi.restoreAllMocks()
 })
 afterAll(() => vi.unstubAllGlobals())
-
-// See App.desktopDetails.test.tsx for why cards are found by label and opened by keyboard.
-const card = (name: string) => {
-  const button = document.querySelector<HTMLButtonElement>(`.react-flow__node button[aria-label^="${name}"]`)
-  if (!button) throw new Error(`No person card for ${name}`)
-  return button
-}
-const choose = async (user: ReturnType<typeof userEvent.setup>, name: string) => {
-  card(name).focus()
-  await user.keyboard('{Enter}')
-}
 
 test('on a phone, details open in a modal sheet that holds focus', async () => {
   const user = userEvent.setup()

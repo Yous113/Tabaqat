@@ -3,22 +3,10 @@ import { cleanup, render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { afterAll, afterEach, beforeAll, expect, test, vi } from 'vitest'
 import App from '../src/App'
+import { phone, stubBrowser } from './helpers/browser'
+import { choose } from './helpers/personCards'
 
-beforeAll(() => {
-  vi.stubGlobal('ResizeObserver', class {
-    observe() {}
-    unobserve() {}
-    disconnect() {}
-  })
-  vi.stubGlobal('matchMedia', (query: string) => ({
-    matches: ['(prefers-reduced-motion)', '(prefers-reduced-motion: reduce)'].includes(query),
-    media: query,
-    addEventListener() {},
-    removeEventListener() {},
-    addListener() {},
-    removeListener() {},
-  }))
-})
+beforeAll(() => stubBrowser(phone, { reducedMotion: true }))
 afterEach(() => {
   cleanup()
   vi.restoreAllMocks()
@@ -31,8 +19,7 @@ test('with reduced motion, the phone sheet fades in and out instead of sliding',
   const user = userEvent.setup()
   window.history.replaceState(null, '', '/periods/rashidun')
   render(<App />)
-  document.querySelector<HTMLButtonElement>('.react-flow__node button[aria-label^="Abū Bakr"]')!.focus()
-  await user.keyboard('{Enter}')
+  await choose(user, 'Abū Bakr')
 
   const sheet = screen.getByRole('dialog')
   expect(Number(sheet.style.opacity)).toBeLessThan(1)

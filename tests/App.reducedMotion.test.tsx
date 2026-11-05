@@ -3,37 +3,25 @@ import { cleanup, fireEvent, render, screen, waitFor } from '@testing-library/re
 import userEvent from '@testing-library/user-event'
 import { afterAll, afterEach, beforeAll, beforeEach, expect, test, vi } from 'vitest'
 import App from '../src/App'
+import { desktop, stubBrowser } from './helpers/browser'
+import { card } from './helpers/personCards'
 
-beforeAll(() => {
-  vi.stubGlobal('ResizeObserver', class {
-    observe() {}
-    unobserve() {}
-    disconnect() {}
-  })
-  vi.stubGlobal('matchMedia', (query: string) => ({
-    matches: ['(prefers-reduced-motion)', '(prefers-reduced-motion: reduce)', '(min-width: 48rem)'].includes(query),
-    media: query,
-    addEventListener() {},
-    removeEventListener() {},
-    addListener() {},
-    removeListener() {},
-  }))
-})
+beforeAll(() => stubBrowser(desktop, { reducedMotion: true }))
 beforeEach(() => window.history.replaceState(null, '', '/'))
 afterEach(cleanup)
 afterAll(() => vi.unstubAllGlobals())
 
 test('with reduced motion, a held period card fades instead of moving', async () => {
   render(<App />)
-  const card = screen.getByRole('link', { name: 'Explore Rashidun lineage tree' })
+  const periodCard = screen.getByRole('link', { name: 'Explore Rashidun lineage tree' })
 
-  fireEvent.pointerDown(card, { button: 0, isPrimary: true, pointerType: 'mouse' })
+  fireEvent.pointerDown(periodCard, { button: 0, isPrimary: true, pointerType: 'mouse' })
 
   await waitFor(() => {
-    expect(card.style.opacity).not.toBe('')
-    expect(Number(card.style.opacity)).toBeLessThan(1)
+    expect(periodCard.style.opacity).not.toBe('')
+    expect(Number(periodCard.style.opacity)).toBeLessThan(1)
   })
-  expect(card.style.transform).toBe('')
+  expect(periodCard.style.transform).toBe('')
   fireEvent.pointerCancel(window, { isPrimary: true, pointerType: 'mouse' })
 })
 
@@ -41,7 +29,7 @@ test('with reduced motion, the desktop details panel fades in and out instead of
   const user = userEvent.setup()
   window.history.replaceState(null, '', '/periods/rashidun')
   render(<App />)
-  fireEvent.click(document.querySelector('.react-flow__node button[aria-label^="Abū Bakr"]')!)
+  fireEvent.click(card('Abū Bakr'))
 
   const panel = screen.getByRole('region', { name: /^Person details/ })
   expect(Number(panel.style.opacity)).toBeLessThan(1)

@@ -3,38 +3,14 @@ import { cleanup, render, screen, waitFor, within } from '@testing-library/react
 import userEvent from '@testing-library/user-event'
 import { afterAll, afterEach, beforeAll, beforeEach, expect, test, vi } from 'vitest'
 import App from '../src/App'
+import { desktop, stubBrowser } from './helpers/browser'
+import { card, choose } from './helpers/personCards'
 
-beforeAll(() => {
-  vi.stubGlobal('ResizeObserver', class {
-    observe() {}
-    unobserve() {}
-    disconnect() {}
-  })
-  vi.stubGlobal('matchMedia', (query: string) => ({
-    matches: query === '(min-width: 48rem)',
-    media: query,
-    addEventListener() {},
-    removeEventListener() {},
-    addListener() {},
-    removeListener() {},
-  }))
-})
+beforeAll(() => stubBrowser(desktop))
 beforeEach(() => window.history.replaceState(null, '', '/periods/rashidun'))
 afterEach(cleanup)
 afterAll(() => vi.unstubAllGlobals())
 
-// React Flow hides nodes until it can measure them, which jsdom cannot do, and a
-// hidden element has no accessible name, so cards are found by their label.
-const card = (name: string) => {
-  const button = document.querySelector<HTMLButtonElement>(`.react-flow__node button[aria-label^="${name}"]`)
-  if (!button) throw new Error(`No person card for ${name}`)
-  return button
-}
-// Keyboard, because a pointer press on a card reaches d3-zoom, which cannot handle jsdom's events.
-const choose = async (user: ReturnType<typeof userEvent.setup>, name: string) => {
-  card(name).focus()
-  await user.keyboard('{Enter}')
-}
 const details = (name: string) => screen.getByRole('region', { name: `Person details: ${name}` })
 
 test('on desktop, details open beside a tree that stays undimmed and usable', async () => {

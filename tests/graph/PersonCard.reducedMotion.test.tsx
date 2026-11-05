@@ -5,17 +5,9 @@ import { afterAll, afterEach, beforeAll, expect, test, vi } from 'vitest'
 import { people } from '../../src/data/lineage'
 import type { PersonNode } from '../../src/graph/createLineageGraph'
 import { PersonCard } from '../../src/graph/PersonCard'
+import { phone, stubBrowser } from '../helpers/browser'
 
-beforeAll(() => {
-  vi.stubGlobal('matchMedia', (query: string) => ({
-    matches: query === '(prefers-reduced-motion)' || query === '(prefers-reduced-motion: reduce)',
-    media: query,
-    addEventListener() {},
-    removeEventListener() {},
-    addListener() {},
-    removeListener() {},
-  }))
-})
+beforeAll(() => stubBrowser(phone, { reducedMotion: true }))
 afterEach(cleanup)
 afterAll(() => vi.unstubAllGlobals())
 

@@ -1,11 +1,14 @@
 // @vitest-environment jsdom
-import { afterEach, expect, test } from 'vitest'
+import { afterAll, afterEach, beforeAll, expect, test, vi } from 'vitest'
 import { cleanup, render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { PersonDetails } from '../../src/graph/PersonDetails'
 import { people, tenures } from '../../src/data/lineage'
+import { stubBrowser } from '../helpers/browser'
 
+beforeAll(() => stubBrowser())
 afterEach(cleanup)
+afterAll(() => vi.unstubAllGlobals())
 
 test('shows sourced multiple reigns with both calendar labels and closes by keyboard', async () => {
   const person = people.find(({ id }) => id === 'jafar-ibn-ahmad')!

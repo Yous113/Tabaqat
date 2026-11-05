@@ -3,14 +3,9 @@ import { cleanup, fireEvent, render, screen, waitFor } from '@testing-library/re
 import userEvent from '@testing-library/user-event'
 import { afterAll, afterEach, beforeAll, beforeEach, expect, test, vi } from 'vitest'
 import App from '../src/App'
+import { stubBrowser } from './helpers/browser'
 
-beforeAll(() => {
-  vi.stubGlobal('ResizeObserver', class {
-    observe() {}
-    unobserve() {}
-    disconnect() {}
-  })
-})
+beforeAll(() => stubBrowser())
 beforeEach(() => window.history.replaceState(null, '', '/'))
 afterEach(cleanup)
 afterAll(() => vi.unstubAllGlobals())
