@@ -13,7 +13,7 @@ import { useSheetDrag } from './useSheetDrag'
 export function DetailsSheet({ person, tenures, onClose, onReopen }: DetailsSurfaceProps & { onReopen: () => void }) {
   const headingId = useId()
   const sheet = useRef<HTMLElement>(null)
-  const body = useRef<HTMLDivElement>(null)
+  const body = useScrollToTop<HTMLDivElement>(person.id)
   const closeButton = useRef<HTMLButtonElement>(null)
   const [isPresent, safeToRemove] = usePresence()
   const { y, opacity, dim, dragHandlers } = useSheetDrag({ sheet, body, isPresent, safeToRemove, onClose, onReopen })
@@ -26,8 +26,6 @@ export function DetailsSheet({ person, tenures, onClose, onReopen }: DetailsSurf
       if (previousFocus instanceof HTMLElement && previousFocus.isConnected) previousFocus.focus({ preventScroll: true })
     }
   }, [isPresent])
-
-  useScrollToTop(body, person.id)
 
   return (
     <div className={`fixed inset-0 z-50 flex items-end ${isPresent ? '' : 'pointer-events-none'}`}>

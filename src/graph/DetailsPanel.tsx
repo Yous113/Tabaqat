@@ -12,7 +12,7 @@ import { PersonProfile } from './PersonProfile'
  * `returnFocus` puts focus back on a person's place in the tree.
  */
 export function DetailsPanel({ person, tenures, onClose, returnFocus }: DetailsSurfaceProps & { returnFocus: (personId: string) => void }) {
-  const panel = useRef<HTMLElement>(null)
+  const panel = useScrollToTop<HTMLElement>(person.id)
   const closeButton = useRef<HTMLButtonElement>(null)
   const isPresent = useIsPresent()
   const reducedMotion = useReducedMotion()
@@ -22,14 +22,12 @@ export function DetailsPanel({ person, tenures, onClose, returnFocus }: DetailsS
     const focused = document.activeElement
     if (!focused || focused === document.body || panel.current?.contains(focused)) returnFocus(person.id)
     onClose()
-  }, [person.id, onClose, returnFocus])
+  }, [panel, person.id, onClose, returnFocus])
 
   // Opening moves focus in. Choosing someone else leaves it on the tree, so a reader can keep going from card to card.
   useEffect(() => {
     if (isPresent) closeButton.current?.focus({ preventScroll: true })
   }, [isPresent])
-
-  useScrollToTop(panel, person.id)
 
   // On the window, because focus may be anywhere in the tree.
   useEffect(() => {
