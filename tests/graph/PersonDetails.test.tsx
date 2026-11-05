@@ -13,7 +13,7 @@ afterAll(() => vi.unstubAllGlobals())
 test('shows sourced multiple reigns with both calendar labels and closes by keyboard', async () => {
   const person = people.find(({ id }) => id === 'jafar-ibn-ahmad')!
   let closed = false
-  render(<PersonDetails person={person} tenures={tenures.filter(({ personId }) => personId === person.id)} onClose={() => { closed = true }} />)
+  render(<PersonDetails person={person} tenures={tenures.filter(({ personId }) => personId === person.id)} onClose={() => { closed = true }} onReopen={() => {}} returnFocus={() => {}} />)
   const dialog = screen.getByRole('dialog')
   expect(dialog.textContent).toContain('295–296 AH')
   expect(dialog.textContent).toContain('908–908 CE')

@@ -100,6 +100,10 @@ export function PeriodTree({ periodId, topInset = 0 }: { periodId: PeriodId; top
   const [selectedId, setSelectedId] = useState<string | null>(null)
   const openPerson = useCallback((id: string) => setSelectedId(id), [])
   const closePerson = useCallback(() => setSelectedId(null), [])
+  // Within this tree, because a fading page can leave a second copy in the document.
+  const focusCard = useCallback((id: string) => {
+    section.current?.querySelector<HTMLElement>(`.react-flow__node[data-id="${id}"] button`)?.focus({ preventScroll: true })
+  }, [])
   // Zero on a phone, where the details are a modal sheet rather than a panel beside the tree.
   const panelWidth = useCallback(() => section.current?.querySelector<HTMLElement>('.details-panel')?.offsetWidth ?? 0, [])
   const selectedPerson = selectedId ? people.find(({ id }) => id === selectedId) : undefined
@@ -109,7 +113,7 @@ export function PeriodTree({ periodId, topInset = 0 }: { periodId: PeriodId; top
     <section ref={section} aria-label={`${period.title} lineage tree`} data-panel-open={panelOpen ? '' : undefined} className="period-tree relative h-full min-h-0 w-full bg-[var(--parchment)]" style={{ '--panel-timing': settleTiming, '--period-header-height': `${topInset}px` } as CSSProperties}>
       <TreeCanvas period={period} topInset={topInset} onOpen={openPerson} panelWidth={panelWidth} />
       <AnimatePresence>
-        {selectedPerson && <PersonDetails key="details" person={selectedPerson} tenures={tenures.filter(({ personId }) => personId === selectedPerson.id)} onClose={closePerson} onReopen={() => openPerson(selectedPerson.id)} />}
+        {selectedPerson && <PersonDetails key="details" person={selectedPerson} tenures={tenures.filter(({ personId }) => personId === selectedPerson.id)} onClose={closePerson} onReopen={() => openPerson(selectedPerson.id)} returnFocus={focusCard} />}
       </AnimatePresence>
     </section>
   )
