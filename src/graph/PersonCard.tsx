@@ -1,17 +1,20 @@
 import { Handle, Position, type NodeProps } from '@xyflow/react'
 import type { PersonNode } from './createLineageGraph'
+import { formatReign } from './formatReign'
 import { periodAppearance } from './periodAppearance'
 
 export function PersonCard({ data }: NodeProps<PersonNode>) {
   const { person, tenures = [], onOpen } = data
   const prophet = person.roles?.includes('prophet')
   const appearance = tenures[0] && periodAppearance[tenures[0].periodId]
+  // Abbasid reigns stay in the details panel for now.
+  const reigns = tenures.filter(({ periodId }) => periodId !== 'abbasid').flatMap(({ reigns }) => reigns).map(formatReign)
   const color = prophet ? 'border-amber-400 bg-emerald-950 text-white' : appearance?.card ?? 'border-stone-300 bg-[#fffdf8] text-stone-900'
 
   return (
     <article className={`relative h-full w-full rounded-2xl border shadow-sm ${color}`}>
       <Handle type="target" position={Position.Top} isConnectable={false} />
-      <button type="button" onClick={() => onOpen?.(person.id)} aria-label={`${person.name} — view details`}
+      <button type="button" onClick={() => onOpen?.(person.id)} aria-label={[person.name, ...reigns, 'view details'].join(' — ')}
         className="nodrag flex h-full w-full flex-col items-center justify-center gap-2 rounded-2xl px-3 py-3 text-center outline-offset-4 hover:brightness-95 focus-visible:outline-2 focus-visible:outline-emerald-700">
         <span className="text-base leading-6 font-semibold">{person.name}{person.honorific && <span> {person.honorific}</span>}</span>
         {tenures.length > 0 && <span className="flex flex-wrap justify-center gap-1">
@@ -19,6 +22,7 @@ export function PersonCard({ data }: NodeProps<PersonNode>) {
             {periodAppearance[tenure.periodId].label} {tenure.status === 'claimant' ? 'claimant' : 'caliph'}
           </span>)}
         </span>}
+        {reigns.map((reign) => <span key={reign} className="text-xs leading-4 font-medium">{reign}</span>)}
         {person.aliases?.length ? <span className={`text-sm leading-5 ${prophet ? 'text-white/80' : 'text-stone-600'}`}>{person.aliases.join(' · ')}</span> : null}
       </button>
       <Handle type="source" position={Position.Bottom} isConnectable={false} />
