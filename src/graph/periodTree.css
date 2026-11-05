@@ -1,14 +1,62 @@
-.period-tree .react-flow__controls-button {
-  width: 44px;
-  height: 44px;
+.period-tree {
+  --xy-controls-button-background-color: transparent;
+  --xy-controls-button-background-color-hover: var(--control-hover);
+  --xy-controls-button-border-color: var(--control-divider);
+  --xy-controls-button-color: var(--ink);
+  --xy-controls-button-color-hover: var(--ink);
+  --control-hover: color-mix(in srgb, var(--ink) 8%, transparent);
+  --control-divider: color-mix(in srgb, var(--ink) 15%, transparent);
 }
 
-.period-tree .react-flow__controls {
-  margin-bottom: max(12px, env(safe-area-inset-bottom));
+/* Panels sit on the visible part of the tree: under the header, inside the safe area. */
+.period-tree .react-flow__panel.top { margin-top: calc(var(--period-header-height, 0px) + 0.75rem); }
+.period-tree .react-flow__panel.right { margin-right: max(0.75rem, env(safe-area-inset-right)); }
+.period-tree .react-flow__panel.bottom { margin-bottom: max(0.75rem, env(safe-area-inset-bottom)); }
+.period-tree .react-flow__panel.left { margin-left: max(0.75rem, env(safe-area-inset-left)); }
+
+.period-tree__controls {
+  display: flex;
   overflow: hidden;
-  border: 1px solid #d6d3d1;
-  border-radius: 12px;
-  box-shadow: 0 2px 8px #29252412;
+  border-radius: 0.75rem;
+}
+.period-tree__controls button {
+  min-height: 2.75rem;
+  padding: 0.5rem 0.75rem;
+  color: inherit;
+  font-size: 0.875rem;
+  font-weight: 600;
+}
+.period-tree__controls button + button { border-left: 1px solid var(--control-divider); }
+.period-tree__controls button:disabled { opacity: 0.5; }
+.period-tree__controls button:active:not(:disabled),
+.period-tree .react-flow__controls-button:active { background: var(--control-hover); }
+
+.period-tree .react-flow__controls {
+  overflow: hidden;
+  border-radius: 0.75rem;
+}
+.period-tree .react-flow__controls-button {
+  width: 2.75rem;
+  height: 2.75rem;
+}
+.period-tree .react-flow__controls-button svg {
+  max-width: 0.875rem;
+  max-height: 0.875rem;
+}
+/* Both control groups clip their corners, which would clip an outer focus ring too. */
+.period-tree__controls button:focus-visible,
+.period-tree .react-flow__controls-button:focus-visible { outline-offset: -3px; }
+
+.period-tree .react-flow__panel.period-tree__hint {
+  left: 50%;
+  max-width: min(65%, calc(100% - 9rem));
+  margin-inline: 0;
+  padding: 0.5rem 0.75rem;
+  border-radius: 0.75rem;
+  font-weight: 500;
+  text-align: center;
+  pointer-events: none;
+  transform: translateX(-50%);
 }
 
 .period-tree .react-flow__handle {
@@ -24,7 +72,7 @@
 
 .details-panel {
   position: fixed;
-  inset: 0 0 0 auto;
+  inset: var(--period-header-height, 0px) 0 0 auto;
   z-index: 50;
   width: var(--details-panel-width);
   overflow-y: auto;
@@ -51,4 +99,15 @@
   .period-tree .react-flow__panel.bottom.center {
     transition: none;
   }
+}
+
+@media (hover: hover) {
+  .period-tree__controls button:hover:not(:disabled) { background: var(--control-hover); }
+}
+@media (prefers-contrast: more) {
+  .period-tree { --control-divider: var(--ink); }
+}
+/* Only reached with very large text on a phone, where the tree needs the room more. */
+@media (max-width: 15rem) {
+  .period-tree .react-flow__panel.period-tree__hint { display: none; }
 }

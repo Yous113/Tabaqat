@@ -2,10 +2,10 @@ import { MotionConfig } from 'motion/react'
 import { useEffect, useState, type MouseEvent, type MouseEventHandler } from 'react'
 import { periods } from './data/lineage'
 import type { PeriodDefinition } from './data/types'
-import { PeriodTree } from './graph/PeriodTree'
 import { resolveRoute, type AppRoute } from './navigation'
 import { LandingPage } from './pages/LandingPage'
 import { NotFoundPage } from './pages/NotFoundPage'
+import { PeriodPage } from './pages/PeriodPage'
 import { PageFade } from './ui/PageFade'
 
 function Screen() {
@@ -50,18 +50,7 @@ function Page({ route, period, navigate }: {
   }
 
   if (period) {
-    return (
-      <main className="history-period" onClick={navigate}>
-        <header className="history-period__header">
-          <a className="history-home-link" href="/" data-app-link><span aria-hidden="true">←</span> Islamic history</a>
-          <div className="history-period__heading">
-            <h1 id="page-title" tabIndex={-1}>{period.title}</h1>
-            <p>{period.description} · Father-to-child lineage</p>
-          </div>
-        </header>
-        <div className="history-period__canvas"><PeriodTree key={period.id} periodId={period.id} /></div>
-      </main>
-    )
+    return <main className="history-period" onClick={navigate}><PeriodPage period={period} /></main>
   }
 
   return <NotFoundPage onClick={navigate} />
