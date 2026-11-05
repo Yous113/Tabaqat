@@ -126,21 +126,19 @@
 }
 
 /* The tree stays usable beside the panel, and its floating controls never sit under it. */
-@media (min-width: 48rem) {
-  .period-tree .react-flow__panel.top.right,
-  .period-tree .react-flow__panel.bottom.center,
-  .period-tree .react-flow__panel.bottom.right {
-    transition: translate 300ms ease-out;
-  }
-  .period-tree[data-details-open] .react-flow__panel.top.right,
-  .period-tree[data-details-open] .react-flow__panel.bottom.right {
-    translate: calc(-1 * var(--details-panel-width)) 0;
-  }
-  /* Narrower too, so on a small desktop it wraps rather than reaching the zoom controls. */
-  .period-tree[data-details-open] .react-flow__panel.bottom.center {
-    max-width: calc(100% - var(--details-panel-width) - 9rem);
-    translate: calc(var(--details-panel-width) / -2) 0;
-  }
+.period-tree .react-flow__panel.top.right,
+.period-tree .react-flow__panel.bottom.center,
+.period-tree .react-flow__panel.bottom.right {
+  transition: translate 300ms ease-out;
+}
+.period-tree[data-panel-open] .react-flow__panel.top.right,
+.period-tree[data-panel-open] .react-flow__panel.bottom.right {
+  translate: calc(-1 * var(--details-panel-width)) 0;
+}
+/* Narrower too, so on a small desktop it wraps rather than reaching the zoom controls. */
+.period-tree[data-panel-open] .react-flow__panel.bottom.center {
+  max-width: calc(100% - var(--details-panel-width) - 9rem);
+  translate: calc(var(--details-panel-width) / -2) 0;
 }
 @media (prefers-reduced-motion: reduce) {
   .period-tree .react-flow__panel.top.right,

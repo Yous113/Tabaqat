@@ -9,6 +9,7 @@ import { PersonCard } from './PersonCard'
 import { PersonDetails } from './PersonDetails'
 import { fitAllView, focusView, revealShift } from './treeView'
 import { usePressFeedback } from '../ui/motion'
+import { useIsDesktop } from '../ui/useIsDesktop'
 import './periodTree.css'
 
 const nodeTypes = { person: PersonCard }
@@ -99,9 +100,10 @@ export function PeriodTree({ periodId, topInset = 0 }: { periodId: PeriodId; top
   // Zero on a phone, where the details are a modal sheet rather than a panel beside the tree.
   const panelWidth = useCallback(() => section.current?.querySelector<HTMLElement>('.details-panel')?.offsetWidth ?? 0, [])
   const selectedPerson = selectedId ? people.find(({ id }) => id === selectedId) : undefined
+  const panelOpen = useIsDesktop() && selectedPerson !== undefined
 
   return (
-    <section ref={section} aria-label={`${period.title} lineage tree`} data-details-open={selectedPerson ? '' : undefined} className="period-tree relative h-full min-h-0 w-full bg-[var(--parchment)]">
+    <section ref={section} aria-label={`${period.title} lineage tree`} data-panel-open={panelOpen ? '' : undefined} className="period-tree relative h-full min-h-0 w-full bg-[var(--parchment)]">
       <TreeCanvas period={period} topInset={topInset} onOpen={openPerson} panelWidth={panelWidth} />
       <AnimatePresence>
         {selectedPerson && <PersonDetails key="details" person={selectedPerson} tenures={tenures.filter(({ personId }) => personId === selectedPerson.id)} onClose={closePerson} onReopen={() => openPerson(selectedPerson.id)} />}
